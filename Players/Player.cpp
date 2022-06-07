@@ -3,20 +3,20 @@
 //
 
 #include "Player.h"
-#include "utilities.h"
+//#include "../utilities.h"
 #include <string>
+#include <iostream>
+using std::cout;
+using std::string;
+using std::ostream;
+using std::endl;
 
 const int MAX_LEVEL = 10;
 
-static string getJob();
-
-Player::Player(const char *name, int hp, int force) {
+static void printPlayerDetails(ostream &os, const std::string &name, const std::string &job, int level, int force, int HP, int coins);
+Player::Player(const char *name, int hp) {
     m_name = name;
-    if (force > 0) {
-        m_force = force;
-    } else {
-        m_force = DEFAULT_FORCE;
-    }
+    m_force = DEFAULT_FORCE;
     if (hp > 0) {
         m_maxHp = hp;
     } else {
@@ -110,17 +110,40 @@ std::ostream& operator<<(std::ostream& os, const Player& player)
     return os;
 }
 
+string Player::getJob() const
+{
+    return "Player";
+}
+
 /**
  * returns the job of the player
  * @return a string that contains the player's job
  */
-static string getJob()
+
+
+static void printPlayerDetails(ostream &os, const std::string &name, const std::string &job, int level, int force, int HP, int coins)
 {
-    if(dynamic_cast<Rogue>(this)!= nullptr){
-        return "Rogue";
+    const int nameDistance = 16;
+    const int distance = 6;
+    os << name;
+    for(unsigned int i = 0; i < nameDistance - name.size(); i++){
+        os << " ";
     }
-    if(dynamic_cast<Wizard>(this)!= nullptr){
-        return "Wizard";
+    os << level;
+    if(level < 10){
+        os << " ";
     }
-    return "Fighter";
+    os <<  "        " << force;
+    for(unsigned int i = 0; i < distance - std::to_string(force).size(); i++){
+        os << " ";
+    }
+    os << HP;
+    for(unsigned int i = 0; i < distance - std::to_string(HP).size(); i++){
+        os << " ";
+    }
+    os << coins;
+    for(unsigned int i = 0; i < distance - std::to_string(coins).size(); i++){
+        os << " ";
+    }
+    os << job << "  ";
 }

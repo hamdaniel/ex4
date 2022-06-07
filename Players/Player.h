@@ -4,9 +4,9 @@
 
 #ifndef EX4_PLAYER_H
 #define EX4_PLAYER_H
-
 #include <string>
-#include "utilities.h"
+using std::string;
+//#include "../utilities.h"
 
 
 const int DEFAULT_FORCE = 5;
@@ -19,14 +19,14 @@ class Player {
      * concatenation operator for Player
      * @return ostream with the Player data
      */
-    friend std::ostream& operator<<(std::ostream& os, const Player& player)
+    friend std::ostream& operator<<(std::ostream& os, const Player& player);
 public:
     /**
      * C'tor of Player class
      *
-     * @param name - The name of the player.
-     * @param force - The starting points of force of the player.
-     * @param hp - The max hp of the player.
+     * @param name - The name of the Player.
+     * @param force - The starting points of force of the Player.
+     * @param hp - The max hp of the Player.
      *
      */
     Player(const char* name, int hp = DEFAULT_HP);
@@ -35,7 +35,7 @@ public:
     * Here we are explicitly telling the compiler to use the default methods
    */
     Player(const Player&) = default;
-    ~Player() = default;
+    virtual ~Player() = default;
     Player& operator=(const Player& other) = default;
 
     /**
@@ -119,9 +119,15 @@ public:
     * @return
     *      int
     */
-    int getAttackStrength();
+    virtual int getAttackStrength();
 
-private:
+    /**
+     * returns the profession of the player as a string
+     * @return a string containing the player's class
+     */
+    virtual string getJob() const;
+
+protected:
     std::string m_name;
     int m_level;
     int m_force;
