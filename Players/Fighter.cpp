@@ -19,5 +19,6 @@ string Fighter::getJob () const
 
 
 int main(){
+    cout<<"hellooooo"<<endl;
     return 0;
 }
