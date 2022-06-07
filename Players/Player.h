@@ -72,7 +72,7 @@ public:
     * @return
     *      void
     */
-    void heal(const int& hpPoints);
+    virtual void heal(const int& hpPoints);
 
     /**
     * lowers the player's hp by the amount received as an argument.

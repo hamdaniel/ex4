@@ -29,6 +29,11 @@ public:
     Wizard& operator=(const Wizard& other) = default;
 
     /**
+     * heals the Wizard for twice the given amount
+     * @param hpPoints hp to heal (twice)
+     */
+    void heal(const int& hpPoints) override;
+    /**
      *
      * @return
      */
