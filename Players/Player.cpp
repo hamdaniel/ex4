@@ -41,9 +41,7 @@ int Player::getLevel() const
 
 void Player::buff(const int &forcePoints)
 {
-    if(forcePoints>0){
-        m_force+=forcePoints;
-    }
+    m_force+=forcePoints;
 }
 
 void Player::heal(const int &hpPoints)
