@@ -6,7 +6,11 @@
 #define EX4_FIGHTER_H
 #include "Player.h"
 #include <string>
+#include <iostream>
+using std::cout;
 using std::string;
+using std::ostream;
+using std::endl;
 
 class Fighter : public Player {
 
