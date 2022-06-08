@@ -14,7 +14,7 @@ class Battle : public Card {
 };
 public:
     Battle(CardName name, int force, int damage, int coins);
-    virtual bool applyEncounter(Player& player)=0;
+    virtual void applyEncounter(Player& player)=0;
     virtual ~Battle();
 
 #endif //EX4_BATTLE_H

@@ -18,5 +18,6 @@ public:
     Vampire(const Vampire&) = default;
     ~Vampire() = default;
     Vampire& operator=(const Vampire& other) = default;
+    void applyEncounter(Player& player) override;
 };
 #endif //EX4_VAMPIRE_H

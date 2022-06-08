@@ -18,7 +18,7 @@ public:
     Dragon(const Dragon&) = default;
     ~Dragon() = default;
     Dragon& operator=(const Dragon& other) = default;
-    bool applyEncounter(Player& player) override;
+    void applyEncounter(Player& player) override;
 };
 
 #endif //EX4_DRAGON_H

@@ -16,6 +16,7 @@ public:
     Goblin(const Goblin&) = default;
     ~Goblin() = default;
     Goblin& operator=(const Goblin& other) = default;
+    void applyEncounter(Player& player) override;
 };
 
 #endif //EX4_GOBLIN_H
