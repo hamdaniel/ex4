@@ -145,3 +145,11 @@ static void printPlayerDetails(ostream &os, const std::string &name, const std::
     }
     os << job << "  ";
 }
+
+int Player::getCoins() const {
+    return m_coins;
+}
+
+string Player::getName() const {
+    return m_name;
+}

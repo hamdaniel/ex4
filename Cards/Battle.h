@@ -8,14 +8,15 @@
 #include "Card.h"
 
 class Battle : public Card {
+protected:
     int m_force;
     int m_damage;
     int m_coins;
-};
+
 public:
-    Battle(CardName name, int force, int damage, int coins);
+    Battle(string name, int force, int damage, int coins);
     virtual void applyEncounter(Player& player)=0;
     virtual ~Battle();
-
+};
 #endif //EX4_BATTLE_H
 

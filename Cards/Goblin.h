@@ -12,7 +12,7 @@ const int GOBLIN_COINS = 2;
 
 class Goblin : public Battle {
 public:
-    Goblin(CardName name);
+    Goblin(string name);
     Goblin(const Goblin&) = default;
     ~Goblin() = default;
     Goblin& operator=(const Goblin& other) = default;

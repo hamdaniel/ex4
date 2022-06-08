@@ -5,7 +5,7 @@
 #include "Dragon.h"
 #include "Player.h"
 
-Dragon::Dragon(CardName name) : Battle(name,DRAGON_FORCE,DRAGON_DAMAGE,DRAGON_COINS) {};
+Dragon::Dragon(string name) : Battle(name,DRAGON_FORCE,DRAGON_DAMAGE,DRAGON_COINS) {};
 
 void Dragon::applyEncounter(Player& player) {
     if (player.getAttackStrength()>=m_force) {
@@ -14,7 +14,7 @@ void Dragon::applyEncounter(Player& player) {
         return;
     }
     else{
-        while(!player.isknockedout){
+        while(!player.isKnockedOut()){
             player.damage(m_damage);
         }
         return;

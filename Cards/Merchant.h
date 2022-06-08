@@ -13,7 +13,7 @@ using std::string;
 class Merchant : public Card {
 public:
     Merchant(string name);
-    void applyEncounter(Player& Player) override;
+    void applyEncounter(Player& player) override;
     ~Merchant()=default;
 };
 

@@ -10,11 +10,11 @@
 const int VAMPIRE_FORCE = 10;
 const int VAMPIRE_DAMAGE = 10;
 const int VAMPIRE_COINS = 2;
-
+const int VAMPIRE_DEBUFF = -1;
 
 class Vampire : public Battle {
 public:
-    Vampire(CardName name);
+    Vampire(string name);
     Vampire(const Vampire&) = default;
     ~Vampire() = default;
     Vampire& operator=(const Vampire& other) = default;

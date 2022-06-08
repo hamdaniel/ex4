@@ -6,5 +6,5 @@
 #include "Card.h"
 #include <string.h>
 
-Card::Card(CardName name) : m_name(name) {};
+Card::Card(string& name) : m_cardName(name) {};
 

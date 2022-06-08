@@ -5,25 +5,27 @@
 #ifndef EX4_CARD_H
 #define EX4_CARD_H
 
-#include "Player.h"
+#include "//Players/Player.h"
+#include <string>
+#include "utilities.h"
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::string;
 
-/*
- *  CardName:
- *  Each card has a name:
- *  Vampire
- *  Goblin
- *  Dragon
- *  Treasure
- *  Merchant
- *  Pitfall
- *  Barfight
- *  Fairy
-*/
-enum class CardName {Vampire, Goblin, Dragon, Treasure, Merchant, Pitfall, Barfight ,Fairy}; // The type of the Card
+
+const string VAMPIRE = "Vampire";
+const string GOBLIN = "Goblin";
+const string DRAGON = "Dragon";
+const string TREASURE = "Treasure";
+const string MERCHANT = "Merchant";
+const string PITFALL = "Pitfall";
+const string BARFIGHT = "Barfight";
+const string FAIRTY = "Fairy";
 
 class Card {
 private:
-    CardName m_name;
+    string m_cardName;
 public:
     /*
     * C'tor of Card class
@@ -32,11 +34,11 @@ public:
     * @return
     *      A new instance of Card.
    */
-    Card(CardName name);
+    Card(string& name);
 
     virtual ~Card();
 
-    virtual bool applyEncounter(Player& Player)=0;
+    virtual void applyEncounter(Player& Player)=0;
 }
 
 #endif //EX4_CARD_H

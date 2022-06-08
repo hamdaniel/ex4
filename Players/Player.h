@@ -125,7 +125,11 @@ public:
      * returns the profession of the player as a string
      * @return a string containing the player's class
      */
-    virtual string getJob() const;
+    virtual getJob() const;
+
+    string getName() const;
+
+    int getCoins() const();
 
 protected:
     std::string m_name;

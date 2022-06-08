@@ -14,7 +14,7 @@ const int DRAGON_COINS = 1000;
 
 class Dragon : public Battle {
 public:
-    Dragon(CardName name);
+    Dragon(string name);
     Dragon(const Dragon&) = default;
     ~Dragon() = default;
     Dragon& operator=(const Dragon& other) = default;
