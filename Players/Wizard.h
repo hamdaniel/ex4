@@ -10,6 +10,8 @@ using std::string;
 
 class Wizard : public Player{
 
+private:
+    static const string rougeJob = "Rogue";
 public:
     /**
      * C'tor of Wizard class

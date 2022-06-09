@@ -41,7 +41,13 @@ int Player::getLevel() const
 
 void Player::buff(const int &forcePoints)
 {
-    m_force+=forcePoints;
+    if(m_force+forcePoints>=0){
+        m_force+=forcePoints;
+    }
+    else{
+        m_force=0;
+    }
+
 }
 
 void Player::heal(const int &hpPoints)
@@ -107,17 +113,6 @@ std::ostream& operator<<(std::ostream& os, const Player& player)
     printPlayerDetails(os, player.m_name, player.getJob(), player.m_level, player.m_force, player.m_hp, player.m_coins);
     return os;
 }
-
-string Player::getJob() const
-{
-    return "Player";
-}
-
-/**
- * returns the job of the player
- * @return a string that contains the player's job
- */
-
 
 static void printPlayerDetails(ostream &os, const std::string &name, const std::string &job, int level, int force, int HP, int coins)
 {

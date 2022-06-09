@@ -122,13 +122,14 @@ public:
     virtual int getAttackStrength();
 
     /**
-     * returns the profession of the player as a string
-     * @return a string containing the player's class
+     * returns the name of the player as a string
+     * @return a string containing the player's name
      */
-    virtual getJob() const;
-
     string getName() const;
-
+    /**
+     * returns the amount of coins in possession by the player
+     * @return an int containing the player's balance
+     */
     int getCoins() const();
 
 protected:
