@@ -1,16 +1,28 @@
 //
 // Created by Daniel Hamzany on 07/06/2022.
 //
-//#include "../utilities.h"
-#include <string>
 #include "Rogue.h"
+#include <string>
+#include "../utilities.h"
+
+
+using std::cout;
+using std::string;
+using std::ostream;
+using std::endl;
+
+const string Rogue::ROGUEJOB="Rogue";
 
 Rogue::Rogue(const char* name, int hp) : Player(name,hp){}
 
-string Rogue::getJob() const
+void Rogue::printPlayerInfo(ostream &os)
 {
-    return "Rogue";
+    printPlayerDetails(os,getName(),ROGUEJOB,getLevel(),getForce(),getHealthPoints(),getCoins());
 }
 
+void Rogue::addCoins(const int& coins)
+{
+    Player::addCoins(2*coins);
+}
 
 

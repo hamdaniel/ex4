@@ -6,13 +6,12 @@
 #define EX4_FIGHTER_H
 #include "Player.h"
 #include <string>
-#include <iostream>
-using std::cout;
-using std::string;
-using std::ostream;
-using std::endl;
+#include "../utilities.h"
 
 class Fighter : public Player {
+
+private:
+    static const string FIGHTERJOB;
 
 public:
     /**
@@ -40,10 +39,9 @@ public:
     Fighter& operator=(const Fighter& other) = default;
 
     /**
-     *
-     * @return
+     * prints the player's stats in the required format
      */
-    string getJob() const override;
+    void printPlayerInfo(ostream &os) override;
 
 };
 #endif //EX4_FIGHTER_H

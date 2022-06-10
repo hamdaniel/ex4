@@ -5,9 +5,13 @@
 #ifndef EX4_PLAYER_H
 #define EX4_PLAYER_H
 #include <string>
-using std::string;
+#include <iostream>
 //#include "../utilities.h"
 
+using std::cout;
+using std::string;
+using std::ostream;
+using std::endl;
 
 const int DEFAULT_FORCE = 5;
 const int DEFAULT_HP = 100;
@@ -15,14 +19,10 @@ const int DEFAULT_HP = 100;
 
 
 class Player {
+
+protected:
     /**
-     * concatenation operator for Player
-     * @return ostream with the Player data
-     */
-    friend std::ostream& operator<<(std::ostream& os, const Player& player);
-public:
-    /**
-     * C'tor of Player class
+     * C'tor of Player class-Players must have a profession, therefore no regular player should be created
      *
      * @param name - The name of the Player.
      * @param force - The starting points of force of the Player.
@@ -32,9 +32,30 @@ public:
     Player(const char* name, int hp = DEFAULT_HP);
 
     /**
+     * Copy C'tor of Player
+     */
+    Player(const Player&) = default;
+
+    /**
+     * returns the current health points of the player
+     * @return an int containing the health points the player currently has
+     */
+     int getHealthPoints();
+
+
+    /**
+     * returns the current force of the player
+     * @return an int containing the force the player currently has
+     */
+     int getForce();
+
+public:
+
+
+    /**
     * Here we are explicitly telling the compiler to use the default methods
    */
-    Player(const Player&) = default;
+
     virtual ~Player() = default;
     Player& operator=(const Player& other) = default;
 
@@ -53,7 +74,7 @@ public:
      * @return
      *      int
      */
-    int getLevel() const;
+     int getLevel();
 
     /**
      * increases the player's force by the amount received as an argument.
@@ -91,17 +112,13 @@ public:
     *      true - if hp=0.
     *      false - else.
     */
-    bool isKnockedOut() const;
+    bool isKnockedOut();
 
     /**
-    * increases the player's coins by the amount received as an argument.
-    *
-    * @param coins - the amount of coins to be added.
-    *
-    * @return
-    *      void
+    * adds the given amount of coins to the player's balance
+    * @param coins the amount to be added
     */
-    void addCoins(const int& coins);
+    virtual void addCoins(const int& coins);
 
     /**
     * removes the amount received as an argument from the player's coins - if the player has enough coins.
@@ -122,17 +139,21 @@ public:
     virtual int getAttackStrength();
 
     /**
+     * prints the player's stats in the required format
+     */
+    virtual void printPlayerInfo(ostream &os)=0;
+    /**
      * returns the name of the player as a string
      * @return a string containing the player's name
      */
-    string getName() const;
+    const string getName();
     /**
      * returns the amount of coins in possession by the player
      * @return an int containing the player's balance
      */
-    int getCoins() const();
+     int getCoins();
 
-protected:
+private:
     std::string m_name;
     int m_level;
     int m_force;

@@ -5,13 +5,15 @@
 #ifndef EX4_WIZARD_H
 #define EX4_WIZARD_H
 #include "Player.h"
+#include "../utilities.h"
 #include <string>
+
 using std::string;
 
 class Wizard : public Player{
 
 private:
-    static const string rougeJob = "Rogue";
+    static const string WIZARDJOB;
 public:
     /**
      * C'tor of Wizard class
@@ -35,10 +37,10 @@ public:
      * @param hpPoints hp to heal (twice)
      */
     void heal(const int& hpPoints) override;
+
     /**
-     *
-     * @return
-     */
-    string getJob() const override;
+     * prints the player's stats in the required format
+    */
+    void printPlayerInfo(ostream &os) override;
 };
 #endif //EX4_WIZARD_H

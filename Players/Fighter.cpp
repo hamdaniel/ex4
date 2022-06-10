@@ -1,24 +1,30 @@
 //
 // Created by Daniel Hamzany on 07/06/2022.
 //
-//#include "../utilities.h"
-#include <string>
+
 #include "Fighter.h"
+#include <string>
+#include "../utilities.h"
+
+using std::cout;
+using std::string;
+using std::ostream;
+using std::endl;
+
+const string Fighter::FIGHTERJOB="Fighter";
 
 Fighter::Fighter(const char* name, int hp) : Player(name,hp){}
 
 int Fighter::getAttackStrength()
 {
-    return m_level+2*m_force;
+    return Player::getAttackStrength()*2-getLevel();
 }
 
-string Fighter::getJob () const
+void Fighter::printPlayerInfo(ostream &os)
 {
-    return "Fighter";
+    printPlayerDetails(os,getName(),FIGHTERJOB,getLevel(),getForce(),getHealthPoints(),getCoins());
 }
-
 
 int main(){
-    cout<<"hellooooo"<<endl;
     return 0;
 }

@@ -5,11 +5,15 @@
 #ifndef EX4_ROGUE_H
 #define EX4_ROGUE_H
 #include "Player.h"
+#include "../utilities.h"
 #include <string>
+
 using std::string;
 
 class Rogue : public Player{
 
+private:
+    static const string ROGUEJOB;
 public:
     /**
      * C'tor of Rogue class
@@ -29,9 +33,15 @@ public:
     Rogue& operator=(const Rogue& other) = default;
 
     /**
-     *
-     * @return
+     * prints the player's stats in the required format
      */
-    string getJob() const override;
+    void printPlayerInfo(ostream &os) override;
+
+    /**
+     * adds the given amount of coins to the player's balance
+     * @param coins the amount to be added
+     */
+    void addCoins(const int& coins) override;
+
 };
 #endif //EX4_ROGUE_H

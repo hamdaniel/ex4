@@ -13,7 +13,8 @@ using std::endl;
 
 const int MAX_LEVEL = 10;
 
-static void printPlayerDetails(ostream &os, const std::string &name, const std::string &job, int level, int force, int HP, int coins);
+//static void printPlayerDetails(ostream &os, const std::string &name, const std::string &job, int level, int force, int HP, int coins);
+
 Player::Player(const char *name, int hp) {
     m_name = name;
     m_force = DEFAULT_FORCE;
@@ -34,7 +35,7 @@ void Player::levelUp()
     }
 }
 
-int Player::getLevel() const
+int Player::getLevel()
 {
     return m_level;
 }
@@ -74,7 +75,7 @@ void Player::damage(const int &damagePoints)
     }
 }
 
-bool Player::isKnockedOut() const
+bool Player::isKnockedOut()
 {
     if(!m_hp){
         return true;
@@ -108,43 +109,49 @@ int Player::getAttackStrength()
     return m_level+m_force;
 }
 
-std::ostream& operator<<(std::ostream& os, const Player& player)
+int Player::getHealthPoints()
 {
-    printPlayerDetails(os, player.m_name, player.getJob(), player.m_level, player.m_force, player.m_hp, player.m_coins);
-    return os;
+    return m_hp;
 }
 
-static void printPlayerDetails(ostream &os, const std::string &name, const std::string &job, int level, int force, int HP, int coins)
+int Player::getForce()
 {
-    const int nameDistance = 16;
-    const int distance = 6;
-    os << name;
-    for(unsigned int i = 0; i < nameDistance - name.size(); i++){
-        os << " ";
-    }
-    os << level;
-    if(level < 10){
-        os << " ";
-    }
-    os <<  "        " << force;
-    for(unsigned int i = 0; i < distance - std::to_string(force).size(); i++){
-        os << " ";
-    }
-    os << HP;
-    for(unsigned int i = 0; i < distance - std::to_string(HP).size(); i++){
-        os << " ";
-    }
-    os << coins;
-    for(unsigned int i = 0; i < distance - std::to_string(coins).size(); i++){
-        os << " ";
-    }
-    os << job << "  ";
+    return m_force;
 }
 
-int Player::getCoins() const {
+//static void printPlayerDetails(ostream &os, const std::string &name, const std::string &job, int level, int force, int HP, int coins)
+//{
+//    const int nameDistance = 16;
+//    const int distance = 6;
+//    os << name;
+//    for(unsigned int i = 0; i < nameDistance - name.size(); i++){
+//        os << " ";
+//    }
+//    os << level;
+//    if(level < 10){
+//        os << " ";
+//    }
+//    os <<  "        " << force;
+//    for(unsigned int i = 0; i < distance - std::to_string(force).size(); i++){
+//        os << " ";
+//    }
+//    os << HP;
+//    for(unsigned int i = 0; i < distance - std::to_string(HP).size(); i++){
+//        os << " ";
+//    }
+//    os << coins;
+//    for(unsigned int i = 0; i < distance - std::to_string(coins).size(); i++){
+//        os << " ";
+//    }
+//    os << job << "  ";
+//}
+
+int Player::getCoins()
+{
     return m_coins;
 }
 
-string Player::getName() const {
+const string Player::getName()
+{
     return m_name;
 }
