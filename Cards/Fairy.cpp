@@ -15,7 +15,7 @@ void Fairy::applyEncounter(Player& player) {
         printFairyMessage(false);
         return;
     }
-    player.buff(10); //should increment by 20
+    player.heal(10); //should increment by 20
     printFairyMessage(true);
     delete isWizard;
     return;

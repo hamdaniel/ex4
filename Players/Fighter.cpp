@@ -25,6 +25,6 @@ void Fighter::printPlayerInfo(ostream &os)
     printPlayerDetails(os,getName(),FIGHTERJOB,getLevel(),getForce(),getHealthPoints(),getCoins());
 }
 
-int main(){
-    return 0;
-}
+//int main(){
+//    return 0;
+//}
