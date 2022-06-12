@@ -3,7 +3,6 @@
 //
 
 #include "Goblin.h"
-#include "Player.h"
 
 Goblin::Goblin(string name) : Battle(name,GOBLIN_FORCE,GOBLIN_DAMAGE,GOBLIN_COINS) {};
 

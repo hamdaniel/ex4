@@ -3,7 +3,6 @@
 //
 
 #include "Dragon.h"
-#include "Player.h"
 
 Dragon::Dragon(string name) : Battle(name,DRAGON_FORCE,DRAGON_DAMAGE,DRAGON_COINS) {};
 

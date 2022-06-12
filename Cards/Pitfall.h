@@ -6,6 +6,7 @@
 #define EX4_PITFALL_H
 
 #include "Card.h"
+
 class Pitfall : public Card {
 public:
     Pitfall(string name);

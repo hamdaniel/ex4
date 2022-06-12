@@ -6,6 +6,7 @@
 #define EX4_FAIRY_H
 
 #include "Card.h"
+
 class Fairy : public Card {
 public:
     Fairy(string name);

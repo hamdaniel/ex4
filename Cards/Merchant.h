@@ -4,11 +4,9 @@
 
 #ifndef EX4_MERCHANT_H
 #define EX4_MERCHANT_H
-#include "utilities.h"
-#include "//Players/Player.h"
+
 #include "Card.h"
-#include <string>
-using std::string;
+
 
 class Merchant : public Card {
 public:
