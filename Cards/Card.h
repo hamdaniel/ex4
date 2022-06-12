@@ -5,7 +5,7 @@
 #ifndef EX4_CARD_H
 #define EX4_CARD_H
 
-#include "/Players/Player.h"
+#include "Player.h"
 #include <string>
 #include "utilities.h"
 #include <iostream>
