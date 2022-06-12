@@ -5,9 +5,9 @@
 #ifndef EX4_CARD_H
 #define EX4_CARD_H
 
-#include "Player.h"
+#include "../Players/Player.h"
 #include <string>
-#include "utilities.h"
+#include "../utilities.h"
 #include <iostream>
 using std::cout;
 using std::cin;
