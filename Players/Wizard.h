@@ -5,9 +5,8 @@
 #ifndef EX4_WIZARD_H
 #define EX4_WIZARD_H
 #include "Player.h"
-#include "utilities.h"
 #include <string>
-#include "utilities.h"
+#include <iostream>
 
 class Wizard : public Player{
 

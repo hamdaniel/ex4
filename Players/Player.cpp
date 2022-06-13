@@ -3,7 +3,7 @@
 //
 
 #include "Player.h"
-#include "utilities.h"
+#include "../utilities.h"
 #include <string>
 #include <iostream>
 using std::cout;

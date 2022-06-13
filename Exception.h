@@ -11,19 +11,19 @@
 
 class DeckFileNotFound : public std::exception{
 public:
-    const std::string what() const { return "Deck File Error: File not found\n";}
+    const char* what() const noexcept { return "Deck File Error: File not found\n";}
 };
 
 class DeckFileFormatError : public std::exception{
     int m_line;
 public:
     DeckFileFormatError(int line) : m_line(line) {};
-    const std::string what() const { return "Deck File Error: File format error in line \n" << m_line;}
+    const char* what() const noexcept { return "Deck File Error: File format error in line " << m_line<<"\n";}
 };
 
 class DeckFileInvalidSize : public std::exception{
 public:
-    const std::string what() const { return "Deck File Error: Deck size is invalid\n";}
+    const char* what() const noexcept { return "Deck File Error: Deck size is invalid\n";}
 };
 
 #endif //EX4_EXCEPTION_H

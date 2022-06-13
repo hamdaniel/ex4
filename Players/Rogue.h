@@ -5,7 +5,6 @@
 #ifndef EX4_ROGUE_H
 #define EX4_ROGUE_H
 #include "Player.h"
-#include "utilities.h"
 #include <string>
 #include <iostream>
 

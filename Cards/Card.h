@@ -39,6 +39,6 @@ public:
     virtual ~Card();
 
     virtual void applyEncounter(Player& Player)=0;
-}
+};
 
 #endif //EX4_CARD_H

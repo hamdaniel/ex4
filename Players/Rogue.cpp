@@ -3,7 +3,7 @@
 //
 #include "Rogue.h"
 #include <string>
-#include "utilities.h"
+#include "../utilities.h"
 
 
 using std::cout;

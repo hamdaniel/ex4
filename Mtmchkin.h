@@ -1,7 +1,13 @@
 #ifndef MTMCHKIN_H_
 #define MTMCHKIN_H_
 
+
+#include "utilities.h"
+#include "Players/player.h"
+#include "Cards/Card.h"
 #include <string>
+#include <queue>
+#include <vector>
 
 class Mtmchkin{
 
@@ -48,6 +54,11 @@ public:
     *          int - number of rounds played
     */
     int getNumberOfRounds() const;
+
+private:
+    int m_numRounds;
+    std::queue<Card*> m_deck;
+    std::vector<Player*> m_players;
 };
 
 
