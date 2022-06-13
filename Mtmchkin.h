@@ -8,6 +8,7 @@
 #include <string>
 #include <queue>
 #include <vector>
+#include <memory>
 
 class Mtmchkin{
 
@@ -57,8 +58,8 @@ public:
 
 private:
     int m_numRounds;
-    std::queue<Card*> m_deck;
-    std::vector<Player*> m_players;
+    std::queue<std::shared_ptr<Card>> m_deck;
+    std::vector<std::unique_ptr<Player>> m_players;
 };
 
 
