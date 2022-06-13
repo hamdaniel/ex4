@@ -21,7 +21,7 @@ const string TREASURE = "Treasure";
 const string MERCHANT = "Merchant";
 const string PITFALL = "Pitfall";
 const string BARFIGHT = "Barfight";
-const string FAIRTY = "Fairy";
+const string FAIRY = "Fairy";
 
 class Card {
 private:
