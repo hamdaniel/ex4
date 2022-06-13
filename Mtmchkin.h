@@ -1,6 +1,8 @@
 #ifndef MTMCHKIN_H_
 #define MTMCHKIN_H_
 
+#include <string>
+
 class Mtmchkin{
 
 public:

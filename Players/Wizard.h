@@ -5,15 +5,21 @@
 #ifndef EX4_WIZARD_H
 #define EX4_WIZARD_H
 #include "Player.h"
-#include "../utilities.h"
+#include "utilities.h"
 #include <string>
-
-using std::string;
+#include "utilities.h"
 
 class Wizard : public Player{
 
+    /**
+     * concatenates the wizard according to the required format
+     * @param os the stream to which the wizard is concatenated
+     * @param wizard wizard to be concatenated
+     * @return the stream with the wizard concatenated to it
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Wizard& wizard);
 private:
-    static const string WIZARDJOB;
+    static const std::string WIZARDJOB;
 public:
     /**
      * C'tor of Wizard class
@@ -41,6 +47,6 @@ public:
     /**
      * prints the player's stats in the required format
     */
-    void printPlayerInfo(ostream &os) override;
+    void printPlayerInfo(std::ostream &os) const override;
 };
 #endif //EX4_WIZARD_H

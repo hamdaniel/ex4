@@ -5,15 +5,21 @@
 #ifndef EX4_ROGUE_H
 #define EX4_ROGUE_H
 #include "Player.h"
-#include "../utilities.h"
+#include "utilities.h"
 #include <string>
-
-using std::string;
+#include <iostream>
 
 class Rogue : public Player{
 
+    /**
+     * concatenates the rogue according to the required format
+     * @param os the stream to which the rogue is concatenated
+     * @param rogue Rogue to be concatenated
+     * @return the stream with the rogue concatenated to it
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Rogue& rogue);
 private:
-    static const string ROGUEJOB;
+    static const std::string ROGUEJOB;
 public:
     /**
      * C'tor of Rogue class
@@ -35,7 +41,7 @@ public:
     /**
      * prints the player's stats in the required format
      */
-    void printPlayerInfo(ostream &os) override;
+    void printPlayerInfo(std::ostream &os) const override;
 
     /**
      * adds the given amount of coins to the player's balance
