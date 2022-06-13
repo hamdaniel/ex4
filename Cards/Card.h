@@ -36,7 +36,7 @@ public:
    */
     Card(string& name);
 
-    virtual ~Card();
+    virtual ~Card() = default;
 
     virtual void applyEncounter(Player& Player)=0;
 };

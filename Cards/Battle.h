@@ -16,7 +16,7 @@ protected:
 public:
     Battle(string name, int force, int damage, int coins);
     virtual void applyEncounter(Player& player)=0;
-    virtual ~Battle();
+    virtual ~Battle()=default;
 };
 #endif //EX4_BATTLE_H
 

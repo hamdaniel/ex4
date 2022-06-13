@@ -10,7 +10,7 @@ class Barfight : public Card {
 public:
     Barfight(string name);
     void applyEncounter(Player& player) override;
-    ~Barfight()=default;
+    ~Barfight() override=default;
 };
 
 

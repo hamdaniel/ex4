@@ -4,5 +4,5 @@
 
 #include "Battle.h"
 
-Battle::Battle(string name, int force, int damage, int coins): Card(name), m_force(force), m_damage(damage), m_coins(coins) {};
+Battle::Battle(string name, int force, int damage, int coins): Card(name), m_force(force), m_damage(damage), m_coins(coins) {}
 

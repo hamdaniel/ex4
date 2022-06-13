@@ -3,6 +3,9 @@
 //
 
 #include "Barfight.h"
+#include "Card.h"
+#include "../Players/Fighter.h"
+#include "../utilities.h"
 
 /**
  * Barfight card constructor

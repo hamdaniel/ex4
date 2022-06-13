@@ -3,20 +3,20 @@
 //
 
 #include "Pitfall.h"
-
+#include "../Players/Rogue.h"
 /**
  * Pitfall card constructor
  */
 Pitfall::Pitfall(string name) : Card(name) {}
 
-void Merchant::applyEncounter(Player& player) {
-Rouge* isRouge = dynamic_cast<Rouge*>(&player);
-if(isRouge==NULL){
+void Pitfall::applyEncounter(Player& player) {
+Rogue* isRogue = dynamic_cast<Rogue*>(&player);
+if(isRogue==NULL){
     player.buff(-10);
     printPitfallMessage(false);
     return;
 }
 printPitfallMessage(true);
-delete isRouge;
+delete isRogue;
 return;
 }

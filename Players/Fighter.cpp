@@ -30,12 +30,3 @@ std::ostream& operator<<(std::ostream& os, const Fighter& fighter)
     fighter.printPlayerInfo(os);
     return os;
 }
-
-
-
-
-
-
-int main(){
-    return 0;
-}

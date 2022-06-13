@@ -3,7 +3,7 @@
 //
 
 #include "Fairy.h"
-
+#include "../Players/Wizard.h"
 /**
  * Fairy card constructor
  */

@@ -3,7 +3,7 @@
 //
 #include "Vampire.h"
 
-Vampire::Vampire(string name)  : Battle(name,VAMPIRE_FORCE,VAMPIRE_DAMAGE,VAMPIRE_COINS) {};
+Vampire::Vampire(string name)  : Battle(name,VAMPIRE_FORCE,VAMPIRE_DAMAGE,VAMPIRE_COINS) {}
 
 void Vampire::applyEncounter(Player& player) {
     if (player.getAttackStrength()>=m_force) {

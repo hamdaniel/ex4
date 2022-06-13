@@ -27,8 +27,8 @@ public:
             temp/=10;
             numLen++;
         }
-        char* message = new char(FILEFORMATERRORMESSAGELEN+numLen+1);
-        message="Deck File Error: File format error in line ";
+        char* message = new char(44+numLen+1);
+        strcpy(message,"Deck File Error: File format error in line ");
         int currentDigit=numLen;
         while(currentDigit){
             temp = m_line;

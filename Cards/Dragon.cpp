@@ -4,7 +4,7 @@
 
 #include "Dragon.h"
 
-Dragon::Dragon(string name) : Battle(name,DRAGON_FORCE,DRAGON_DAMAGE,DRAGON_COINS) {};
+Dragon::Dragon(string name) : Battle(name,DRAGON_FORCE,DRAGON_DAMAGE,DRAGON_COINS) {}
 
 void Dragon::applyEncounter(Player& player) {
     if (player.getAttackStrength()>=m_force) {
