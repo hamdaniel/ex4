@@ -42,7 +42,7 @@ enum class cardType {Goblin, Vampire, Dragon, Barfight, Pitfall, Fairy, Merchant
 
 static bool isRealCard(string card);
 static void initializeLine(char* line);
-static void getName();
+static string getName();
 
 Mtmchkin::Mtmchkin(const std::string fileName) {
     map <string, shared_ptr<Card>> cards;
@@ -85,28 +85,28 @@ Mtmchkin::Mtmchkin(const std::string fileName) {
         printInvalidTeamSize();
         cin << numPlayers;
     }
-    //get name
-    getName();
-    //get card
-    m_players=std::vector<std::unique_ptr<Player>>;
-    string currJob;
-    cin.getline(currJob,15,'\n');
-    while(currJob!="Rouge"&&currJob!="Wizard"&&currJob!="Fighter"){
-        printInvalidClass();
-        getName();
-        cin.getline(currJob,15,'\n');
-    }
-    if(currJob=="Rouge"){
-        std::unique_ptr<Player> ptr(new Rouge(currName));
-        vec.push_back(std::move(ptr));
-    }
-    else if(currJob=="Wizard"){
-        std::unique_ptr<Player> ptr(new Wizard(currName));
-        vec.push_back(std::move(ptr));
-    }
-    else if(currJob=="Fighter"){
-        std::unique_ptr<Player> ptr(new Fighter(currName));
-        vec.push_back(std::move(ptr));
+    for(i=0;i<numPlayers;i++) {
+        //get name
+        string playerName = getName();
+        //get card
+        m_players = std::vector < std::unique_ptr < Player >>;
+        string currJob;
+        cin.getline(currJob, 15, '\n');
+        while (currJob != "Rouge" && currJob != "Wizard" && currJob != "Fighter") {
+            printInvalidClass();
+            playerName = getName();
+            cin.getline(currJob, 15, '\n');
+        }
+        if (currJob == "Rouge") {
+            std::unique_ptr <Player> ptr(new Rouge(currName));
+            vec.push_back(std::move(ptr));
+        } else if (currJob == "Wizard") {
+            std::unique_ptr <Player> ptr(new Wizard(currName));
+            vec.push_back(std::move(ptr));
+        } else if (currJob == "Fighter") {
+            std::unique_ptr <Player> ptr(new Fighter(currName));
+            vec.push_back(std::move(ptr));
+        }
     }
 }
 
@@ -130,7 +130,7 @@ static void initializeLine(char* line)
     }
 }
 
-static void getName(){
+static string getName(){
     string currName;
     char space=0;
     printInsertPlayerMessage();
@@ -142,4 +142,5 @@ static void getName(){
         cin.getline(currName,15,' ');
         cin.getline(space,1);
     }
+    return currName;
 }
