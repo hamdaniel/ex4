@@ -91,11 +91,11 @@ Mtmchkin::Mtmchkin(const std::string fileName) {
         //get card
         m_players = std::vector < std::unique_ptr < Player >>;
         string currJob;
-        cin.getline(currJob, 15, '\n');
+        std::getline(cin,currJob,'\n');
         while (currJob != "Rouge" && currJob != "Wizard" && currJob != "Fighter") {
             printInvalidClass();
             playerName = getName();
-            cin.getline(currJob, 15, '\n');
+            std::getline(cin,currJob,'\n');
         }
         if (currJob == "Rouge") {
             std::unique_ptr <Player> ptr(new Rouge(currName));
@@ -132,15 +132,12 @@ static void initializeLine(char* line)
 
 static string getName(){
     string currName;
-    char space=0;
     printInsertPlayerMessage();
-    cin.getline(currName,15,' ');
-    std::regex expression([^a-zA-Z]);
-    cin.getline(space,1);
-    while(space!=' ' || !std::regex_search(currName,expression)){
+    std::getline(cin,currName,' ');
+    std::regex expression("[^A-Za-z]");
+    while(std::regex_search(currName,expression) || currName.length()>15){
         printInvalidName();
-        cin.getline(currName,15,' ');
-        cin.getline(space,1);
+        std::getline(cin,currName,' ');
     }
     return currName;
 }
