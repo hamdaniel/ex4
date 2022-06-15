@@ -17,7 +17,7 @@ Fighter::Fighter(const char* name, int hp) : Player(name,hp){}
 
 int Fighter::getAttackStrength() const
 {
-    return Player::getAttackStrength()*2-getLevel();
+    return getForce()*2+getLevel();
 }
 
 void Fighter::printPlayerInfo(ostream &os)  const
