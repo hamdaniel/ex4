@@ -44,7 +44,7 @@ static bool isRealCard(string card);
 static void initializeLine(char* line);
 static string getName();
 
-Mtmchkin::Mtmchkin(const std::string fileName) {
+Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0), m_deck(nullptr), m_players(nullptr), m_leaderboard(nullptr) {
     map <string, shared_ptr<Card>> cards;
     cards[CARDS[(int) cardType::Goblin]] = shared_ptr<Card>(new Goblin(CARDS[(int) cardType::Goblin]));
     cards[CARDS[(int) cardType::Vampire]] = shared_ptr<Card>(new Vampire(CARDS[(int) cardType::Vampire]));
@@ -140,4 +140,42 @@ static string getName(){
         std::getline(cin,currName,' ');
     }
     return currName;
+}
+
+bool isGameOver() const {
+    for(std::unique_ptr<Player> player : m_players){
+        if(!player->isKnockedOut() || player->getLevel()!=10){
+            return false;
+        }
+    }
+    printGameEndMessage();
+    return true;
+}
+
+int getNumberOfRounds() const{
+    return m_numRounds;
+}
+
+void playRound(){
+    while(!isGameOver()){
+        printRoundStartMessage();
+        for(std::unique_ptr<Player> player : m_players){
+            if(player->isKnockedOut() || player->getLevel()==10){
+                continue;
+            }
+            std::unique_ptr<Card> currCard=m_deck.front();
+            m_deck.pop_front();
+            currCard->applyEncounter(player);
+            m_deck.push_back(currCard);
+            //check if player got to level 10
+            if(player->getLevel()==10){
+
+            }
+            //check if player died
+            if(player->isKnockedOut()){
+
+            }
+        }
+        m_numRounds++;
+    }
 }
