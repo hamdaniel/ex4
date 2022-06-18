@@ -98,13 +98,13 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0), m_deck(nullptr)
             std::getline(cin,currJob,'\n');
         }
         if (currJob == "Rouge") {
-            std::unique_ptr <Player> ptr(new Rouge(currName));
+            std::unique_ptr <Player> ptr(new Rouge(playerName));
             vec.push_back(std::move(ptr));
         } else if (currJob == "Wizard") {
-            std::unique_ptr <Player> ptr(new Wizard(currName));
+            std::unique_ptr <Player> ptr(new Wizard(playerName));
             vec.push_back(std::move(ptr));
         } else if (currJob == "Fighter") {
-            std::unique_ptr <Player> ptr(new Fighter(currName));
+            std::unique_ptr <Player> ptr(new Fighter(playerName));
             vec.push_back(std::move(ptr));
         }
     }
