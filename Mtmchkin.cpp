@@ -76,6 +76,8 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0), m_deck(nullptr)
         initializeLine(line);
         currLine++;
     }
+    //need to check if enough cards have been entered or throw invalidSize
+
     //start game and get num players
     printStartGameMessage();
     int numPlayers = 0;
