@@ -63,7 +63,7 @@ static bool isActive(const Player& player);
 
 //static string getName();
 
-Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0), m_deck(nullptr), m_players(nullptr), m_leaderboard(nullptr) {
+Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
     map <string, shared_ptr<Card>> cards;
     cards[CARDS[(int) cardType::Goblin]] = shared_ptr<Card>(new Goblin(CARDS[(int) cardType::Goblin]));
     cards[CARDS[(int) cardType::Vampire]] = shared_ptr<Card>(new Vampire(CARDS[(int) cardType::Vampire]));
@@ -104,7 +104,7 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0), m_deck(nullptr)
 void Mtmchkin::playRound()
 {
     for(int i=0; i<(int)m_players.size(); i++){
-        if(isActive(*(m_players[i].get())))
+        if(isActive(*m_players[i].get()))
         {
             (m_deck.front().get())->applyEncounter(*(m_players[i].get()));
             m_deck.push(m_deck.front());

@@ -8,12 +8,12 @@ Goblin::Goblin(string name) : Battle(name,GOBLIN_FORCE,GOBLIN_DAMAGE,GOBLIN_COIN
 
 void Goblin::applyEncounter(Player& player) {
     if (player.getAttackStrength() >= m_force) {
-        printWinBattle(player.getName(),m_cardName);
+        printWinBattle(player.getName(),getName());
         player.levelUp();
         player.addCoins(m_coins);
         return;
     } else {
-        printLossBattle(player.getName(),m_cardName);
+        printLossBattle(player.getName(),getName());
         player.damage(m_damage);
         return;
     }

@@ -61,7 +61,6 @@ private:
     int m_numRounds;
     std::queue<std::shared_ptr<Card>> m_deck;
     std::vector<std::unique_ptr<Player>> m_players;
-    std::list<std::unique_ptr<Player>> m_leaderboard;
 };
 
 
