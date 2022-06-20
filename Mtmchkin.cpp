@@ -73,8 +73,9 @@ Mtmchkin::Mtmchkin(const std::string fileName) {
     cards[CARDS[(int) cardType::Fairy]] = shared_ptr<Card>(new Fairy(CARDS[(int) cardType::Fairy]));
     cards[CARDS[(int) cardType::Merchant]] = shared_ptr<Card>(new Merchant(CARDS[(int) cardType::Merchant]));
     cards[CARDS[(int) cardType::Treasure]] = shared_ptr<Card>(new Treasure(CARDS[(int) cardType::Treasure]));
-    vector <string> deck = readFromFile(fileName);
 
+    vector <string> deck = readFromFile(fileName);
+    m_numRounds=0;
     for (int i = 0; i < (int) deck.size(); i++) {
         shared_ptr <Card> card = cards[deck[i]];
         m_deck.push(card);
@@ -134,6 +135,27 @@ void Mtmchkin::playRound()
             }
         }
     }
+    m_numRounds++;
+}
+
+int Mtmchkin::getNumberOfRounds() const
+{
+    return m_numRounds;
+}
+
+void Mtmchkin::printLeaderBoard() const
+{
+    for(int i=0; i<(int)m_players.size(); i++){
+        cout<<*(m_players[i].get())<<endl;
+    }
+}
+
+bool Mtmchkin::isGameOver() const{
+    for(int i=0; i<(int)m_players.size(); i++){
+        if(isActive(*(m_players[i].get())))
+            return false;
+    }
+    return true;
 }
         //get job
 //        m_players = vector<unique_ptr<Player>>; I think it was initialized
