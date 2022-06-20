@@ -3,11 +3,12 @@
 
 
 #include "utilities.h"
-#include "Players/player.h"
+#include "Players/Player.h"
 #include "Cards/Card.h"
 #include <string>
 #include <queue>
 #include <vector>
+#include <list>
 #include <memory>
 
 class Mtmchkin{
@@ -60,6 +61,7 @@ private:
     int m_numRounds;
     std::queue<std::shared_ptr<Card>> m_deck;
     std::vector<std::unique_ptr<Player>> m_players;
+    std::list<std::unique_ptr<Player>> m_leaderboard;
 };
 
 

@@ -7,11 +7,13 @@ Vampire::Vampire(string name)  : Battle(name,VAMPIRE_FORCE,VAMPIRE_DAMAGE,VAMPIR
 
 void Vampire::applyEncounter(Player& player) {
     if (player.getAttackStrength()>=m_force) {
+        printWinBattle(player.getName(),m_cardName);
         player.levelUp();
         player.addCoins(m_coins);
         return;
     }
     else{
+        printLossBattle(player.getName(),m_cardName);
         player.damage(m_damage);
         player.buff(VAMPIRE_DEBUFF);
         return;
