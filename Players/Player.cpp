@@ -13,17 +13,13 @@ using std::endl;
 
 const int MAX_LEVEL = 10;
 
-Player::Player(const char *name, int hp) {
+Player::Player(const string name) {
     m_name = name;
     m_force = DEFAULT_FORCE;
-    if (hp > 0) {
-        m_maxHp = hp;
-    } else {
-        m_maxHp = DEFAULT_HP;
-    }
+    m_hp = DEFAULT_HP;
+    m_maxHp = DEFAULT_HP;
     m_coins = 0;
     m_level = 1;
-    m_hp = m_maxHp;
 }
 
 void Player::levelUp()

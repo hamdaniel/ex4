@@ -24,11 +24,9 @@ public:
      * C'tor of Wizard class
      *
      * @param name - The name of the Wizard.
-     * @param force - The starting points of force of the Wizard.
-     * @param hp - The max hp of the Wizard.
      *
      */
-    Wizard(const char* name, int hp = DEFAULT_HP);
+    Wizard(const std::string name);
 
     /**
     * Here we are explicitly telling the compiler to use the default methods

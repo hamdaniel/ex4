@@ -13,7 +13,7 @@ using std::endl;
 
 const string Rogue::ROGUEJOB="Rogue";
 
-Rogue::Rogue(const char* name, int hp) : Player(name,hp){}
+Rogue::Rogue(const string name) : Player(name){}
 
 void Rogue::addCoins(const int& coins)
 {

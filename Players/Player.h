@@ -24,11 +24,9 @@ protected:
      * C'tor of Player class-Players must have a profession, therefore no regular player should be created
      *
      * @param name - The name of the Player.
-     * @param force - The starting points of force of the Player.
-     * @param hp - The max hp of the Player.
      *
      */
-    Player(const char* name, int hp = DEFAULT_HP);
+    Player(const std::string name);
 
     /**
      * Copy C'tor of Player

@@ -14,7 +14,7 @@ using std::endl;
 
 const string Wizard::WIZARDJOB="Wizard";
 
-Wizard::Wizard(const char* name, int hp) : Player(name,hp){}
+Wizard::Wizard(const string name) : Player(name){}
 
 void Wizard::heal(const int &hpPoints)
 {
@@ -30,4 +30,8 @@ std::ostream& operator<<(std::ostream& os, const Wizard& wizard)
 {
     wizard.printPlayerInfo(os);
     return os;
+}
+
+int main(){
+    return 0;
 }

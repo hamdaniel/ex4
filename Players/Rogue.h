@@ -24,11 +24,9 @@ public:
      * C'tor of Rogue class
      *
      * @param name - The name of the Rogue.
-     * @param force - The starting points of force of the Rogue.
-     * @param hp - The max hp of the Rogue.
      *
      */
-    Rogue(const char* name, int hp = DEFAULT_HP);
+    Rogue(const std::string name);
 
     /**
     * Here we are explicitly telling the compiler to use the default methods

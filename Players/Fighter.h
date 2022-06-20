@@ -26,11 +26,9 @@ public:
      * C'tor of Fighter class
      *
      * @param name - The name of the Fighter.
-     * @param force - The starting points of force of the Fighter.
-     * @param hp - The max hp of the Fighter.
      *
      */
-    Fighter(const char* name, int hp = DEFAULT_HP);
+    Fighter(const std::string name);
 
     /**
     * attack strength for Fighter is calculated differently, calculates as specified in instructions

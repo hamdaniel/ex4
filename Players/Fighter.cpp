@@ -13,7 +13,7 @@ using std::endl;
 
 const string Fighter::FIGHTERJOB="Fighter";
 
-Fighter::Fighter(const char* name, int hp) : Player(name,hp){}
+Fighter::Fighter(const string name) : Player(name){}
 
 int Fighter::getAttackStrength() const
 {
