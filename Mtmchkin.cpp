@@ -64,10 +64,10 @@ static map<string,shared_ptr<Card>> initializeMap();
 //static string getName();
 
 Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
+    printStartGameMessage();
     map<string, shared_ptr<Card>> cardsMap = initializeMap();
     vector<string> deck = readFromFile(fileName);
     m_numRounds=0;
-    printStartGameMessage();
     for(int i = 0; i < (int) deck.size(); i++){
         shared_ptr <Card> card = cardsMap[deck[i]];
         m_deck.push(card);
