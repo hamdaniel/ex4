@@ -9,7 +9,7 @@ using std::string;
 using std::cout;
 using std::cin;
 
-const string MERCHANT_NAME = "merchant";
+const string MERCHANT_NAME = "Merchant";
 const int HEALTH_POTION =1;
 const int FORCE_BOOST =2;
 const int LEAVE =0;
