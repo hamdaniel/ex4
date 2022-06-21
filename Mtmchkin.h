@@ -23,6 +23,13 @@ public:
     *      A new instance of Mtmchkin.
     */
     Mtmchkin(const std::string fileName);
+
+    /*
+    * Here we are explicitly telling the compiler that we don’t want our class to be copyable or
+    * assignable at all.
+   */
+    Mtmchkin(const Mtmchkin&) = delete;
+    Mtmchkin& operator=(const Mtmchkin& other) = delete;
     
     /*
     * Play the next Round of the game - according to the instruction in the exercise document.
