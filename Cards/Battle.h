@@ -44,7 +44,13 @@ public:
      * upon victory or loses health points and deals with other effects upon defeat
      * @param player the player who faces the monster
      */
-    virtual void applyEncounter(Player& player)=0;
+    virtual bool applyEncounter(Player& player) override;
+
+    /**
+     * the player lost against the monster and faces the consequences
+     * @param player the poor player
+     */
+    virtual void badNews(Player& player);
 
 };
 #endif //EX4_BATTLE_H

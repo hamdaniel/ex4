@@ -25,7 +25,7 @@ public:
      * The player found a treasure chest and is heavily rewarded
      * @param player the player which adds 10 coins to his balance
      */
-    void applyEncounter(Player& player) override;
+    bool applyEncounter(Player& player) override;
 
 
 };

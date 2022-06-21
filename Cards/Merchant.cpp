@@ -20,7 +20,7 @@ Merchant::Merchant() : Card(MERCHANT_NAME) {}
  * the Player encounters the Merchant and can choose to whether to buy goods from him or not
  * @param Player the Player that encountered the Merchant
  */
-void Merchant::applyEncounter(Player& player) {
+bool Merchant::applyEncounter(Player& player) {
     printMerchantInitialMessageForInteractiveEncounter(cout, player.getName(),player.getCoins());
     int input;
     cin >> input;
@@ -51,4 +51,5 @@ void Merchant::applyEncounter(Player& player) {
     else{
         printMerchantSummary(cout,player.getName(),LEAVE,0);
     }
+    return false;
 }

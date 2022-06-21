@@ -13,19 +13,10 @@ const int VAMPIRE_DEBUFF = -1;
 
 Vampire::Vampire()  : Battle(VAMPIRE_NAME,VAMPIRE_FORCE,VAMPIRE_DAMAGE,VAMPIRE_COINS) {}
 
-void Vampire::applyEncounter(Player& player) {
-    if (player.getAttackStrength()>=m_force) {
-        printWinBattle(player.getName(),getName());
-        player.levelUp();
-        player.addCoins(m_loot);
-        return;
-    }
-    else{
-        printLossBattle(player.getName(),getName());
-        player.damage(m_damage);
-        player.buff(VAMPIRE_DEBUFF);
-        return;
-    }
+void Vampire::badNews(Player &player)
+{
+    Battle::badNews(player);
+    player.buff(VAMPIRE_DEBUFF);
 }
 
 

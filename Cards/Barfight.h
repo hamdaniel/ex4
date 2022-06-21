@@ -26,7 +26,7 @@ public:
     * The player participates in a barfight and loses 10 health points if he is not a fighter
     * @param player the player that participates in the barfight
     */
-    void applyEncounter(Player& player) override;
+    bool applyEncounter(Player& player) override;
 
 };
 

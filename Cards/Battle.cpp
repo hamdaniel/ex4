@@ -25,3 +25,20 @@ void Battle::printCardInfo(ostream& os) const
     printMonsterDetails(os,this->m_force,this->m_damage,this->m_loot, isDragon);
     printEndOfCardDetails(os);
 }
+
+bool Battle::applyEncounter(Player& player) {
+    if (player.getAttackStrength()>=m_force) {
+        player.addCoins(m_loot);
+        return true;
+    }
+    else{
+        badNews(player);
+        return false;
+    }
+}
+
+void Battle::badNews(Player &player)
+{
+    printLossBattle(player.getName(),getName());
+    player.damage(m_damage);
+}

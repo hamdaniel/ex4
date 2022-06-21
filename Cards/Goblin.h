@@ -26,14 +26,6 @@ public:
      */
     ~Goblin() = default;
 
-    /**
-     * The player faces a weak goblin which rewards him with little loot and levels up upon victory and loses little
-     * health uopn defeat
-     * @param player the player who faces the goblin
-     */
-    void applyEncounter(Player& player) override;
-
-
 };
 
 #endif //EX4_GOBLIN_H

@@ -25,7 +25,7 @@ public:
      * The player faces a fairy, which will heal him if he is a wizard
      * @param player the player who faces the fairy
      */
-    void applyEncounter(Player& player) override;
+    bool applyEncounter(Player& player) override;
 
 
 };

@@ -11,12 +11,12 @@ const string PITFALL_NAME = "Pitfall";
 
 Pitfall::Pitfall() : Card(PITFALL_NAME) {}
 
-void Pitfall::applyEncounter(Player& player) {
+bool Pitfall::applyEncounter(Player& player) {
     if(dynamic_cast<Rogue*>(&player)== nullptr){
         player.damage(10);
         printPitfallMessage(false);
-        return;
+        return false;
     }
     printPitfallMessage(true);
-    return;
+    return false;
 }

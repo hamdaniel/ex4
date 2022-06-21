@@ -15,12 +15,12 @@ const int DAMAGE_TO_NON_FIGHTERS = 10;
 
 Barfight::Barfight() : Card(BARFIGHT_NAME) {}
 
-void Barfight::applyEncounter(Player& player) {
+bool Barfight::applyEncounter(Player& player) {
     if(dynamic_cast<Fighter*>(&player) == nullptr){
         player.damage(DAMAGE_TO_NON_FIGHTERS);
         printBarfightMessage(false);
-        return;
+        return false;
     }
     printBarfightMessage(true);
-    return;
+    return false;
 }

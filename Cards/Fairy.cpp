@@ -11,12 +11,12 @@ const string FAIRY_NAME = "Fairy";
 
 Fairy::Fairy() : Card(FAIRY_NAME) {}
 
-void Fairy::applyEncounter(Player& player) {
+bool Fairy::applyEncounter(Player& player) {
     if(dynamic_cast<Wizard*>(&player)== nullptr){
         printFairyMessage(false);
-        return;
+        return false;
     }
     player.heal(10);
     printFairyMessage(true);
-    return;
+    return false;
 }

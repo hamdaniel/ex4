@@ -46,7 +46,7 @@ public:
      * The player whose turn it is draws a card from the deck and faces its contents
      * @param Player the player which draws the card
      */
-    virtual void applyEncounter(Player& Player)=0;
+    virtual bool applyEncounter(Player& Player)=0;
 
     /**
      * concatenates the Card according to the required format

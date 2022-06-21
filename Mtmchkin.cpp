@@ -18,6 +18,7 @@
 #include "Cards/Pitfall.h"
 #include "Cards/Treasure.h"
 #include "Cards/Merchant.h"
+#include "Cards/Gang.h"
 #include "Exception.h"
 #include <queue>
 #include <fstream>
@@ -45,14 +46,15 @@ const int CLASS_TYPES = 3;
 const int MIN_DECK_SIZE = 5;
 const int PLAYER_MAX_LEVEL = 10;
 const int NUM_OF_SPACES_AFTER_RANKING = 10;
-
+const string GANG = "Gang";
+const string GANG_END = "EndGang";
 const char* CARDS[CARD_TYPES] = {"Goblin", "Vampire", "Dragon", "Barfight", "Pitfall", "Fairy", "Merchant", "Treasure"};
 enum class cardType {Goblin, Vampire, Dragon, Barfight, Pitfall, Fairy, Merchant, Treasure};
 
 const string CLASSES[CLASS_TYPES] = {"Rogue", "Wizard", "Fighter"};
 enum class classType {Rogue, Wizard, Fighter};
 
-static vector<string> readFromFile(string fileName);
+static vector<shared_ptr<Card>> readFromFile(string fileName,map<string,shared_ptr<Card>> cardsMap);
 static bool isRealCard(string card);
 static string getPlayerName();
 static string getPlayerClass();
@@ -62,17 +64,18 @@ static unique_ptr<Player> createPlayer(const string playerName, const string pla
 static bool isActive(const Player& player);
 static map<string,shared_ptr<Card>> initializeMap();
 static int getNumPlayers();
+static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum);
+static bool isMonster(string line);
 
 //static string getName();
 
 Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
     printStartGameMessage();
     map<string, shared_ptr<Card>> cardsMap = initializeMap();
-    vector<string> deck = readFromFile(fileName);
+    vector<shared_ptr<Card>> deck = readFromFile(fileName, cardsMap);
     m_numRounds=0;
     for(int i = 0; i < (int) deck.size(); i++){
-        shared_ptr <Card> card = cardsMap[deck[i]];
-        m_deck.push(card);
+        m_deck.push(deck[i]);
     }
     int numPlayers=getNumPlayers();
     for(int i = 0; i < numPlayers; i++){
@@ -94,7 +97,10 @@ void Mtmchkin::playRound()
     for(int i=0; i<(int)m_players.size(); i++){
         if(isActive(*m_players[i].get())){
             printTurnStartMessage((m_players[i].get())->getName());
-            (m_deck.front().get())->applyEncounter(*(m_players[i].get()));
+            if((m_deck.front().get())->applyEncounter(*(m_players[i].get()))){
+                printWinBattle(m_players[i].get()->getName(),m_deck.front().get()->getName());
+                (m_players[i].get())->levelUp();
+            }
             m_deck.push(m_deck.front());
             m_deck.pop();
             if((m_players[i].get())->getLevel()==PLAYER_MAX_LEVEL){
@@ -177,18 +183,23 @@ static map<string,shared_ptr<Card>> initializeMap()
 
 
 
-static vector<string> readFromFile(string fileName)
+static vector<shared_ptr<Card>> readFromFile(string fileName,map<string,shared_ptr<Card>> cardsMap)
 {
     ifstream deck(fileName);
     if (!deck){
         throw DeckFileNotFound();
     }
-    vector<string> result;
+    vector<shared_ptr<Card>> result;
     int currLine = 1;
     string line;
     while (getline(deck, line)){
         if (isRealCard(line)){
-            result.push_back(line);
+            result.push_back(cardsMap[line]);
+        }
+        else if(!line.compare(GANG)) {
+            vector<string> gangMembers = buildGang(deck, cardsMap, currLine+1);
+            result.push_back(shared_ptr<Card>(new Gang(gangMembers)));
+            currLine+=((int)gangMembers.size()+1);
         }
         else{
             throw DeckFileFormatError(currLine);
@@ -278,6 +289,36 @@ static int getNumPlayers()
         std::getline(cin, numPlayers, '\n');
     }
     return std::stoi(numPlayers);
+}
+
+static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum)
+{
+    string line;
+    vector<string> result;
+    while(getline(deck, line)){
+        if(!line.compare(GANG_END)){
+            for(int i=0;i<(int)result.size();i++){
+            }
+            return result;
+        }
+        else if(isMonster(line)){
+            result.push_back(line);
+        }
+        else{
+            throw DeckFileFormatError(linenum);
+        }
+        linenum++;
+    }
+    throw DeckFileFormatError(linenum);
+}
+
+static bool isMonster(string line)
+{
+    if((!line.compare(CARDS[(int)cardType::Dragon]))||(!line.compare(CARDS[(int)cardType::Goblin]))
+                                                    ||(!line.compare(CARDS[(int)cardType::Vampire]))){
+        return true;
+    }
+    return false;
 }
 
 //static void rearrangeWin(vector<unique_ptr<Player>> players, int i)

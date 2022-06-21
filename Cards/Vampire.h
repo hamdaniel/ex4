@@ -22,10 +22,9 @@ public:
     ~Vampire() = default;
 
     /**
-     * The player faces an evil vampire, and is granted coins and levels up upon victory and loses health points
-     * and one force point upon defeat
-     * @param player the player who faces the vampire
+     * the player lost to a vampire, so he also loses one force point
+     * @param player the player whose life force is sucked out of their body
      */
-    void applyEncounter(Player& player) override;
+    void badNews(Player& player) override;
 };
 #endif //EX4_VAMPIRE_H
