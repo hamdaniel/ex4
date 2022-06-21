@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <regex>
 #include <memory>
 
 using std::string;
@@ -60,6 +61,7 @@ static bool isValidName(const string playerName);
 static unique_ptr<Player> createPlayer(const string playerName, const string playerClass);
 static bool isActive(const Player& player);
 static map<string,shared_ptr<Card>> initializeMap();
+static int getNumPlayers();
 
 //static string getName();
 
@@ -72,14 +74,8 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
         shared_ptr <Card> card = cardsMap[deck[i]];
         m_deck.push(card);
     }
-    string numPlayers = "";
-    printEnterTeamSizeMessage();
-    std::getline(cin, numPlayers, '\n');
-    while(std::stoi(numPlayers) < 2 || std::stoi(numPlayers) > 6){
-        printInvalidTeamSize();
-        std::getline(cin, numPlayers, '\n');
-    }
-    for(int i = 0; i < std::stoi(numPlayers); i++){
+    int numPlayers=getNumPlayers();
+    for(int i = 0; i < numPlayers; i++){
         printInsertPlayerMessage();
         string playerName = getPlayerName();
         string playerClass = getPlayerClass();
@@ -269,6 +265,19 @@ static unique_ptr<Player> createPlayer(string playerName, string playerClass)
 static bool isActive(const Player& player)
 {
     return (!player.isKnockedOut()&&player.getLevel()<PLAYER_MAX_LEVEL) ? true : false;
+}
+
+static int getNumPlayers()
+{
+    string numPlayers = "";
+    printEnterTeamSizeMessage();
+    std::getline(cin, numPlayers, '\n');
+    std::regex expression ("^[2-6]");
+    while(!std::regex_search(numPlayers,expression)){
+        printInvalidTeamSize();
+        std::getline(cin, numPlayers, '\n');
+    }
+    return std::stoi(numPlayers);
 }
 
 //static void rearrangeWin(vector<unique_ptr<Player>> players, int i)
