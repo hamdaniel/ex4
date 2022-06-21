@@ -3,7 +3,7 @@
 //
 
 #include "Dragon.h"
-#include "../Players/player.h"
+#include "../Players/Player.h"
 using std::string;
 
 const string DRAGON_NAME = "Dragon";
