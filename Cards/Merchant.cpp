@@ -48,4 +48,7 @@ void Merchant::applyEncounter(Player& player) {
             printMerchantSummary(cout,player.getName(),FORCE_BOOST,10);
         }
     }
+    else{
+        printMerchantSummary(cout,player.getName(),LEAVE,0);
+    }
 }

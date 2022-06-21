@@ -250,7 +250,7 @@ bool badPlayerInputTest()
 bool merchantInputTest()
 {
     const string tmp_file("merchantInput_test");
-    string input("2\nmatamDalf Wizardd\nmatamDalf rogoe\nmatamDalf Wizard\nrocky Fighter"
+    string input("2\nmatamDalf Wizardd\nmatamDalf rogoe\nmatamDalf Wizard\nrocky Fighter\n"
                  "1\n"
                  "1\n"
                  "0\n"
@@ -378,6 +378,7 @@ int main(){
     run_test(roundLimitTest,"Round upper limit test");
     run_test(allTenTest,"All reach lvl 10 test");
     run_test(badPlayerInputTest,"Bad player input test");
+    run_test(merchantInputTest,"Merchant test");
     run_test(gangTest1,"Gang Test 1");
     run_test(gangTest2,"Gang Test 2");
     run_test(gangTest3,"Gang Test 3");
