@@ -56,6 +56,7 @@ static bool isRealCard(string card);
 static string getPlayerName();
 static string getPlayerClass();
 static bool isValidClass(const string playerClass);
+static bool isValidName(const string playerName);
 static unique_ptr<Player> createPlayer(const string playerName, const string playerClass);
 static bool isActive(const Player& player);
 static map<string,shared_ptr<Card>> initializeMap();
@@ -78,18 +79,17 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
         printInvalidTeamSize();
         std::getline(cin, numPlayers, '\n');
     }
-    int i = 0;
-    while(i < std::stoi(numPlayers)){
+    for(int i = 0; i < std::stoi(numPlayers); i++){
+        printInsertPlayerMessage();
         string playerName = getPlayerName();
         string playerClass = getPlayerClass();
-        if (isValidClass(playerClass)){
-            m_players.push_back(createPlayer(playerName, playerClass));
-            i++;
+        while((!isValidName(playerName))||(!isValidClass(playerClass))){
+            string playerName = getPlayerName();
+            string playerClass = getPlayerClass();
         }
-        else{
-            printInvalidClass();
-        }
+        m_players.push_back(createPlayer(playerName, playerClass));
     }
+
 }
 
 void Mtmchkin::playRound()
@@ -217,25 +217,23 @@ static bool isRealCard(string card)
 
 static string getPlayerName(){
     string result;
-    bool flag = true;
-    printInsertPlayerMessage();
-    while(flag){
-        std::getline(cin,result,' ');
-        flag=false;
-        if(result.size()>15){
-            flag=true;
-        }
-        for(int i=0;i<(int)result.size(); i++){
-            if(!std::isalpha(result[i])){
-                flag=true;
-            }
-        }
-        if(flag){
+    std::getline(cin,result,' ');
+    return result;
+}
+
+
+static bool isValidName(string playerName)
+{
+    if(playerName.size()>15){
+        return false;
+    }
+    for(int i = 0; i < (int)playerName.size(); i++){
+        if(!std::isalpha(playerName[i])){
             printInvalidName();
-            std::getline(cin,result,'\n');
+            return false;
         }
     }
-    return result;
+    return true;
 }
 
 static string getPlayerClass()
@@ -252,6 +250,7 @@ static bool isValidClass(string playerClass)
             return true;
         }
     }
+    printInvalidClass();
     return false;
 }
 

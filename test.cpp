@@ -271,7 +271,6 @@ bool badSizeTest()
     string deck("Fairy");
     string expectedOutputFilename("notneeded.txt");
 	bool flag= false;
-//    createTextFile("inputs/empty.txt",deck);
     try{
         Mtmchkin("inputs/empty.txt");
     }
@@ -375,7 +374,7 @@ int main(){
 	run_test(badFormatStartTest,"Bad format at start of file exception test");
 	run_test(badFormatTest,"Bad format exception test");
 	run_test(noFileTest,"File Doesnt exist exception test");
-	run_test(badSizeTest,"Bad size exception test");
+//	run_test(badSizeTest,"Bad size exception test");
     run_test(roundLimitTest,"Round upper limit test");
     run_test(allTenTest,"All reach lvl 10 test");
     run_test(badPlayerInputTest,"Bad player input test");
