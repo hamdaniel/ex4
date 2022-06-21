@@ -21,7 +21,7 @@ Battle::Battle(string name, int force, int damage, int coins):
 void Battle::printCardInfo(ostream& os) const
 {
     printCardDetails(os, this->getName());
-    bool isDragon = ((this->getName().compare(DRAGON)))?true:false;
+    bool isDragon = (!(this->getName().compare(DRAGON)))?true:false;
     printMonsterDetails(os,this->m_force,this->m_damage,this->m_loot, isDragon);
     printEndOfCardDetails(os);
 }
