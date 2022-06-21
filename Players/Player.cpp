@@ -18,7 +18,7 @@ Player::Player(const string name) {
     m_force = DEFAULT_FORCE;
     m_hp = DEFAULT_HP;
     m_maxHp = DEFAULT_HP;
-    m_coins = 0;
+    m_coins = 10;
     m_level = 1;
 }
 

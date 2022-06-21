@@ -168,8 +168,9 @@ bool testCard()
 /* ---------------------------------------------------------------------------------------------- */
 // --------------------------------       Tests for Mtmchkin class          ------------------------------
 
-bool gameRunTest(){
-//   init cin from file
+bool gameRunTest()
+{
+    //   init cin from file
     std::ifstream in("in.txt");
     if(!in.is_open()){
         throw std::exception();
@@ -240,7 +241,7 @@ bool allTenTest()
 bool badPlayerInputTest()
 {
     const string tmp_file("badPlayerInput_test");
-    string input("2\nmatamDalf Wizardd \nmatamDalf rogoe\n matamDalf Wizard\nrocky Fighter");
+    string input("2\nmatamDalf Wizardd\nmatamDalf rogoe\nmatamDalf Wizard\nrocky Fighter");
     string deck("Goblin\nVampire\nGoblin\nGoblin\nDragon");
     string expectedOutputFilename("tests/badPlayerInput_test_expected.txt");
     return GeneralGameSimulationTest(tmp_file, input, deck, expectedOutputFilename);
@@ -249,7 +250,7 @@ bool badPlayerInputTest()
 bool merchantInputTest()
 {
     const string tmp_file("merchantInput_test");
-    string input("2\nmatamDalf Wizardd \nmatamDalf rogoe\n matamDalf Wizard\nrocky Fighter\n"
+    string input("2\nmatamDalf Wizardd\nmatamDalf rogoe\nmatamDalf Wizard\nrocky Fighter"
                  "1\n"
                  "1\n"
                  "0\n"
@@ -266,10 +267,11 @@ bool merchantInputTest()
 bool badSizeTest()
 {
     const string tmp_file("badSize_test");
-    string input("4\nBarbieGirl Wizard\nInABarbieWorld Rogue\n MadeOfPlastic Rogue\nITSFANTASTIC Wizard");
+    string input("4\nBarbieGirl Wizard\nInABarbieWorld Rogue\nMadeOfPlastic Rogue\nITSFANTASTIC Wizard");
     string deck("Fairy");
     string expectedOutputFilename("notneeded.txt");
 	bool flag= false;
+//    createTextFile("inputs/empty.txt",deck);
     try{
         Mtmchkin("inputs/empty.txt");
     }
@@ -287,7 +289,7 @@ bool noFileTest()
     string deck("This_is_not_the_file_your_looking_for");
     bool flag = false;
     try{
-        Mtmchkin("noFile.txt");
+        Mtmchkin("inputs/noFile.txt");
     }
     catch(const DeckFileNotFound& e){
         flag=true;
@@ -304,7 +306,6 @@ bool badFormatTest()
     bool flag = false;
     try {
         Mtmchkin("inputs/badFormat_test.txt");
-//        GeneralGameSimulationTest(tmp_file, input, deck, expectedOutputFilename);
     }
     catch(const DeckFileFormatError& e){
         if(strcmp(e.what(),"Deck File Error: File format error in line 2")==0) {
@@ -322,7 +323,7 @@ bool badFormatStartTest()
     string expectedOutputFilename("notneeded.txt");
     bool flag = false;
     try {
-        Mtmchkin("badFormat_test_start_of_file.txt");
+        Mtmchkin("inputs/badFormat_test_start_of_file.txt");
     }
     catch(const DeckFileFormatError& e){
         if(strcmp(e.what(),"Deck File Error: File format error in line 1")==0)
@@ -333,6 +334,32 @@ bool badFormatStartTest()
     return flag;
 }
 
+/* ---------------------------------------------------------------------------------------------- */
+/* --------------------------------        Bonus Tests         ---------------------------------- */
+bool gangTest1(){
+    const string tmp_file("gangTest1_test");
+    string input("2\nmatamDalf Wizardd\nmatamDalf rogoe\nmatamDalf Wizard\nrocky Fighter");
+    string deck("Goblin\nGang\nGoblin\nGoblin\nGoblin\nVampire\nDragon\nEndGang\nGoblin\nGoblin\nGoblin\n");
+    string expectedOutputFilename("tests/gangTest1_test_expected.txt");
+    return GeneralGameSimulationTest(tmp_file, input, deck, expectedOutputFilename);
+}
+
+
+bool gangTest2(){
+    const string tmp_file("gangTest2_test");
+    string input("2\nOmerTests Wizardd\nRegev rogoe\nmatamDalf Wizard\nrocky Fighter");
+    string deck("Gang\nDragon\nGoblin\nGoblin\nGoblin\nGoblin\nEndGang\nGoblin\nGoblin\nGoblin\nPitfall\n");
+    string expectedOutputFilename("tests/gangTest2_test_expected.txt");
+    return GeneralGameSimulationTest(tmp_file, input, deck, expectedOutputFilename);
+}
+
+bool gangTest3(){
+    const string tmp_file("gangTest3_test");
+    string input("2\nOmerTests Wizardd\nRegev rogoe\nOmerTests Wizard\nrocky Fighter");
+    string deck("Gang\nGoblin\nGoblin\nEndGang\nGoblin\nGoblin\nGoblin\nPitfall\nPitfall\n");
+    string expectedOutputFilename("tests/gangTest3_test_expected.txt");
+    return GeneralGameSimulationTest(tmp_file, input, deck, expectedOutputFilename);
+}
 /* ---------------------------------------------------------------------------------------------- */
 // --------------------------------       Main function          ------------------------------
 
@@ -352,7 +379,8 @@ int main(){
     run_test(roundLimitTest,"Round upper limit test");
     run_test(allTenTest,"All reach lvl 10 test");
     run_test(badPlayerInputTest,"Bad player input test");
-    run_test(merchantInputTest,"Merchant input test");
-
+    run_test(gangTest1,"Gang Test 1");
+    run_test(gangTest2,"Gang Test 2");
+    run_test(gangTest3,"Gang Test 3");
     return 0;
 }

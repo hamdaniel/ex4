@@ -11,7 +11,7 @@ using std::string;
 using std::ostream;
 using std::endl;
 
-const string Rogue::ROGUEJOB="Rogue";
+const string ROGUEJOB="Rogue";
 
 Rogue::Rogue(const string name) : Player(name){}
 

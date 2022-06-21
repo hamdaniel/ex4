@@ -5,10 +5,11 @@
 #include <string>
 #include <exception>
 
-const int FILEFORMATERRORMESSAGELEN = 44;
 class DeckFileNotFound : public std::exception
 {
+
 public:
+
     const char* what() const noexcept override
     {
         return "Deck File Error: File not found\n";

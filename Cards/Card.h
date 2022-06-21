@@ -6,40 +6,57 @@
 #define EX4_CARD_H
 
 #include "../Players/Player.h"
-#include <string>
 #include "../utilities.h"
-#include <iostream>
-using std::cout;
-using std::cin;
-using std::string;
-
-
-const string VAMPIRE = "Vampire";
-const string GOBLIN = "Goblin";
-const string DRAGON = "Dragon";
-const string TREASURE = "Treasure";
-const string MERCHANT = "Merchant";
-const string PITFALL = "Pitfall";
-const string BARFIGHT = "Barfight";
-const string FAIRY = "Fairy";
+#include <string>
 
 class Card {
-private:
-    string m_cardName;
-public:
-    /*
-    * C'tor of Card class
-    *
-    * @param name - The name of the card.
-    * @return
-    *      A new instance of Card.
-   */
-    Card(string& name);
 
+private:
+
+    std::string m_cardName;
+
+protected:
+    /**
+     * print card details to the given stream
+     * @param os stream the card is printed to
+     */
+    virtual void printCardInfo(std::ostream& os) const;
+
+public:
+
+    /**
+     * returns the card's name
+     * @return string containing the card's name
+     */
+    std::string getName() const;
+
+    /**
+    * Card C'tor(Card is pure virtual)
+    * @param name - The name of the card.
+    *
+    */
+    Card(const std::string& name);
+
+    /**
+     * Default Card D'tor
+     */
     virtual ~Card() = default;
 
+    /**
+     * The player whose turn it is draws a card from the deck and faces its contents
+     * @param Player the player which draws the card
+     */
     virtual void applyEncounter(Player& Player)=0;
-    string getName();
+
+    /**
+     * concatenates the Card according to the required format
+     * @param os the stream to which the card is concatenated
+     * @param card card to be concatenated
+     * @return the stream with the card concatenated to it
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Card& card);
 };
+
+
 
 #endif //EX4_CARD_H

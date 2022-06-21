@@ -13,12 +13,27 @@ const int GOBLIN_DAMAGE = 10;
 const int GOBLIN_COINS = 2;
 
 class Goblin : public Battle {
+
 public:
-    Goblin(string name);
-    Goblin(const Goblin&) = default;
+
+    /**
+     * Goblin C'tor
+     */
+    Goblin();
+
+    /**
+     * Default Goblin D'tor
+     */
     ~Goblin() = default;
-    Goblin& operator=(const Goblin& other) = default;
+
+    /**
+     * The player faces a weak goblin which rewards him with little loot and levels up upon victory and loses little
+     * health uopn defeat
+     * @param player the player who faces the goblin
+     */
     void applyEncounter(Player& player) override;
+
+
 };
 
 #endif //EX4_GOBLIN_H

@@ -7,17 +7,25 @@
 
 #include "Battle.h"
 
-const int VAMPIRE_FORCE = 10;
-const int VAMPIRE_DAMAGE = 10;
-const int VAMPIRE_COINS = 2;
-const int VAMPIRE_DEBUFF = -1;
-
 class Vampire : public Battle {
+
 public:
-    Vampire(string name);
-    Vampire(const Vampire&) = default;
+
+    /**
+     * Vampire C'tor
+     */
+    Vampire();
+
+    /**
+     * Default Vampire D'tor
+     */
     ~Vampire() = default;
-    Vampire& operator=(const Vampire& other) = default;
+
+    /**
+     * The player faces an evil vampire, and is granted coins and levels up upon victory and loses health points
+     * and one force point upon defeat
+     * @param player the player who faces the vampire
+     */
     void applyEncounter(Player& player) override;
 };
 #endif //EX4_VAMPIRE_H

@@ -8,15 +8,44 @@
 #include "Card.h"
 
 class Battle : public Card {
+
+private:
+
+    /**
+     * prints the battle card's info
+     * @param os the stream to print the card's details to
+     */
+    void printCardInfo(std::ostream& os) const override;
+
 protected:
+
     int m_force;
     int m_damage;
-    int m_coins;
+    int m_loot;
 
 public:
-    Battle(string name, int force, int damage, int coins);
+    
+    /**
+     * Battle C'tor (battle is pure virtual)
+     * @param name the name of the card
+     * @param force monster's force
+     * @param damage monster's damage to the player upon defeat
+     * @param loot loot granted to the player upon victory
+     */
+    Battle(std::string name, int force, int damage, int loot);
+
+    /**
+     * Default Battle D'tor
+     */
+    virtual ~Battle() = default;
+
+    /**
+     * The given player faces a monster and is granted loot and levels up
+     * upon victory or loses health points and deals with other effects upon defeat
+     * @param player the player who faces the monster
+     */
     virtual void applyEncounter(Player& player)=0;
-    virtual ~Battle()=default;
+
 };
 #endif //EX4_BATTLE_H
 

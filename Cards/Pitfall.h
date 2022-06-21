@@ -8,10 +8,25 @@
 #include "Card.h"
 
 class Pitfall : public Card {
+
 public:
-    Pitfall(string name);
-    void applyEncounter(Player& player) override;
+
+    /**
+     * C'tor of pitfall
+     */
+    Pitfall();
+
+    /**
+     * Default pitfall D'tor
+     */
     ~Pitfall()=default;
+
+    /**
+     * The player falls in a pitfall and is damaged unless he is a rogue
+     * @param player the player that fell to the trap
+     */
+    void applyEncounter(Player& player) override;
+
 };
 
 #endif //EX4_PITFALL_H

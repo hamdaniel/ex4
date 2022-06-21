@@ -4,19 +4,19 @@
 
 #include "Pitfall.h"
 #include "../Players/Rogue.h"
-/**
- * Pitfall card constructor
- */
-Pitfall::Pitfall(string name) : Card(name) {}
+
+using std::string;
+
+const string PITFALL_NAME = "Pitfall";
+
+Pitfall::Pitfall() : Card(PITFALL_NAME) {}
 
 void Pitfall::applyEncounter(Player& player) {
-Rogue* isRogue = dynamic_cast<Rogue*>(&player);
-if(isRogue==NULL){
-    player.buff(-10);
-    printPitfallMessage(false);
+    if(dynamic_cast<Rogue*>(&player)== nullptr){
+        player.damage(10);
+        printPitfallMessage(false);
+        return;
+    }
+    printPitfallMessage(true);
     return;
-}
-printPitfallMessage(true);
-delete isRogue;
-return;
 }

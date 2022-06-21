@@ -12,7 +12,7 @@ using std::string;
 using std::ostream;
 using std::endl;
 
-const string Wizard::WIZARDJOB="Wizard";
+const string WIZARDJOB="Wizard";
 
 Wizard::Wizard(const string name) : Player(name){}
 
@@ -30,8 +30,4 @@ std::ostream& operator<<(std::ostream& os, const Wizard& wizard)
 {
     wizard.printPlayerInfo(os);
     return os;
-}
-
-int main(){
-    return 0;
 }

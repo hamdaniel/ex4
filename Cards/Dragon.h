@@ -7,18 +7,28 @@
 
 #include "Battle.h"
 
-const int DRAGON_FORCE = 25;
-const int DRAGON_DAMAGE = DEFAULT_HP;
-const int DRAGON_COINS = 1000;
-
-
 class Dragon : public Battle {
+
 public:
-    Dragon(string name);
-    Dragon(const Dragon&) = default;
+
+    /**
+     * Dragon C'tor
+     */
+    Dragon();
+
+    /**
+     * Default Dragon D'tor
+     */
     ~Dragon() = default;
-    Dragon& operator=(const Dragon& other) = default;
+
+    /**
+     * The player faces a mighty dragon and receives much loot and levels up
+     * upon victory but loses all health upon defeat
+     * @param player the player who faces the dragon
+     */
     void applyEncounter(Player& player) override;
+
+
 };
 
 #endif //EX4_DRAGON_H

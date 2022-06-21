@@ -18,7 +18,6 @@ class Wizard : public Player{
      */
     friend std::ostream& operator<<(std::ostream& os, const Wizard& wizard);
 private:
-    static const std::string WIZARDJOB;
 public:
     /**
      * C'tor of Wizard class

@@ -8,10 +8,26 @@
 #include "Card.h"
 
 class Fairy : public Card {
+
 public:
-    Fairy(string name);
+
+    /**
+     * Fairy C'tor
+     */
+    Fairy();
+
+    /**
+     * Default Fairy D'tor
+     */
+    ~Fairy() = default;
+
+    /**
+     * The player faces a fairy, which will heal him if he is a wizard
+     * @param player the player who faces the fairy
+     */
     void applyEncounter(Player& player) override;
-    ~Fairy()=default;
+
+
 };
 
 #endif //EX4_FAIRY_H

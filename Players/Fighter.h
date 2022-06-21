@@ -19,7 +19,6 @@ class Fighter : public Player {
     friend std::ostream& operator<<(std::ostream& os, const Fighter& fighter);
 
 private:
-    static const std::string FIGHTERJOB;
 
 public:
     /**

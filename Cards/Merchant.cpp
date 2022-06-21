@@ -3,15 +3,18 @@
 //
 
 #include "Merchant.h"
+#include <string>
 
+using std::string;
+using std::cout;
+using std::cin;
+
+const string MERCHANT_NAME = "merchant";
 const int HEALTH_POTION =1;
 const int FORCE_BOOST =2;
 const int LEAVE =0;
 
-/**
- * Merchant card constructor
- */
-Merchant::Merchant(string name) : Card(name) {}
+Merchant::Merchant() : Card(MERCHANT_NAME) {}
 
 /**
  * the Player encounters the Merchant and can choose to whether to buy goods from him or not

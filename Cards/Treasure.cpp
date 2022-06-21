@@ -4,10 +4,11 @@
 
 #include "Treasure.h"
 
-/**
- * Treasure card constructor
- */
-Treasure::Treasure(string name) : Card(name) {}
+using std::string;
+
+const string TREASURE_NAME = "Treasure";
+
+Treasure::Treasure() : Card(TREASURE_NAME) {}
 
 void Treasure::applyEncounter(Player& player) {
     player.addCoins(10);

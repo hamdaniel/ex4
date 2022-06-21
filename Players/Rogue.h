@@ -17,8 +17,6 @@ class Rogue : public Player{
      * @return the stream with the rogue concatenated to it
      */
     friend std::ostream& operator<<(std::ostream& os, const Rogue& rogue);
-private:
-    static const std::string ROGUEJOB;
 public:
     /**
      * C'tor of Rogue class

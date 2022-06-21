@@ -6,11 +6,28 @@
 #define EX4_BARFIGHT_H
 
 #include "Card.h"
+
 class Barfight : public Card {
+
 public:
-    Barfight(string name);
+
+     /**
+     *
+     * Barfight C'tor
+     */
+    Barfight();
+
+     /**
+     * Default Barfight D'tor
+     */
+    ~Barfight() = default;
+
+    /**
+    * The player participates in a barfight and loses 10 health points if he is not a fighter
+    * @param player the player that participates in the barfight
+    */
     void applyEncounter(Player& player) override;
-    ~Barfight() override=default;
+
 };
 
 

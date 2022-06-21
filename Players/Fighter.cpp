@@ -11,7 +11,7 @@ using std::string;
 using std::ostream;
 using std::endl;
 
-const string Fighter::FIGHTERJOB="Fighter";
+const string FIGHTERJOB="Fighter";
 
 Fighter::Fighter(const string name) : Player(name){}
 

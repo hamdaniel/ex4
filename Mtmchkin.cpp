@@ -25,11 +25,11 @@
 #include <vector>
 #include <map>
 #include <memory>
-#include <regex>
 
 using std::string;
 using std::ifstream;
 using std::cout;
+using std::cin;
 using std::endl;
 using std::queue;
 using std::map;
@@ -37,65 +37,56 @@ using std::shared_ptr;
 using std::unique_ptr;
 using std::vector;
 
-const int MAXNAMELENGTH = 15;
-const int MAXLINELEN = 9;
-const int CARDTYPES = 8;
-const int CLASSTYPES = 3;
-const int MINDECKSIZE = 5;
-const int PLAYERMAXLEVEL = 10;
+const int MAX_NAME_LENGTH = 15;
+const int MAX_LINE_LENGTH = 9;
+const int CARD_TYPES = 8;
+const int CLASS_TYPES = 3;
+const int MIN_DECK_SIZE = 5;
+const int PLAYER_MAX_LEVEL = 10;
+const int NUM_OF_SPACES_AFTER_RANKING = 10;
 
-const string CARDS[CARDTYPES] = {"Goblin", "Vampire", "Dragon", "Barfight", "Pitfall", "Fairy", "Merchant", "Treasure"};
+const char* CARDS[CARD_TYPES] = {"Goblin", "Vampire", "Dragon", "Barfight", "Pitfall", "Fairy", "Merchant", "Treasure"};
 enum class cardType {Goblin, Vampire, Dragon, Barfight, Pitfall, Fairy, Merchant, Treasure};
 
-const string CLASSES[CLASSTYPES] = {"Rogue", "Wizard", "Fighter"};
+const string CLASSES[CLASS_TYPES] = {"Rogue", "Wizard", "Fighter"};
 enum class classType {Rogue, Wizard, Fighter};
 
 static vector<string> readFromFile(string fileName);
 static bool isRealCard(string card);
-static void initializeLine(char* line);
 static string getPlayerName();
 static string getPlayerClass();
 static bool isValidClass(const string playerClass);
 static unique_ptr<Player> createPlayer(const string playerName, const string playerClass);
 static bool isActive(const Player& player);
-//static void rearrangeWin(vector<unique_ptr<Player>> players, int i);
-//static void rearrangeLoss(vector<unique_ptr<Player>> players, int i);
+static map<string,shared_ptr<Card>> initializeMap();
 
 //static string getName();
 
 Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
-    map <string, shared_ptr<Card>> cards;
-    cards[CARDS[(int) cardType::Goblin]] = shared_ptr<Card>(new Goblin(CARDS[(int) cardType::Goblin]));
-    cards[CARDS[(int) cardType::Vampire]] = shared_ptr<Card>(new Vampire(CARDS[(int) cardType::Vampire]));
-    cards[CARDS[(int) cardType::Dragon]] = shared_ptr<Card>(new Dragon(CARDS[(int) cardType::Dragon]));
-    cards[CARDS[(int) cardType::Barfight]] = shared_ptr<Card>(new Barfight(CARDS[(int) cardType::Barfight]));
-    cards[CARDS[(int) cardType::Pitfall]] = shared_ptr<Card>(new Pitfall(CARDS[(int) cardType::Pitfall]));
-    cards[CARDS[(int) cardType::Fairy]] = shared_ptr<Card>(new Fairy(CARDS[(int) cardType::Fairy]));
-    cards[CARDS[(int) cardType::Merchant]] = shared_ptr<Card>(new Merchant(CARDS[(int) cardType::Merchant]));
-    cards[CARDS[(int) cardType::Treasure]] = shared_ptr<Card>(new Treasure(CARDS[(int) cardType::Treasure]));
-
-    vector <string> deck = readFromFile(fileName);
+    map<string, shared_ptr<Card>> cardsMap = initializeMap();
+    vector<string> deck = readFromFile(fileName);
     m_numRounds=0;
-    for (int i = 0; i < (int) deck.size(); i++) {
-        shared_ptr <Card> card = cards[deck[i]];
+    printStartGameMessage();
+    for(int i = 0; i < (int) deck.size(); i++){
+        shared_ptr <Card> card = cardsMap[deck[i]];
         m_deck.push(card);
     }
     string numPlayers = "";
     printEnterTeamSizeMessage();
     std::getline(cin, numPlayers, '\n');
-    while (std::stoi(numPlayers) < 2 || std::stoi(numPlayers) > 6) {
+    while(std::stoi(numPlayers) < 2 || std::stoi(numPlayers) > 6){
         printInvalidTeamSize();
         std::getline(cin, numPlayers, '\n');
     }
-
     int i = 0;
-    while (i < std::stoi(numPlayers)) {
+    while(i < std::stoi(numPlayers)){
         string playerName = getPlayerName();
         string playerClass = getPlayerClass();
-        if (isValidClass(playerClass)) {
+        if (isValidClass(playerClass)){
             m_players.push_back(createPlayer(playerName, playerClass));
             i++;
-        } else {
+        }
+        else{
             printInvalidClass();
         }
     }
@@ -103,39 +94,49 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
 
 void Mtmchkin::playRound()
 {
+    printRoundStartMessage(getNumberOfRounds()+1);
     for(int i=0; i<(int)m_players.size(); i++){
-        if(isActive(*m_players[i].get()))
-        {
+        if(isActive(*m_players[i].get())){
+            printTurnStartMessage((m_players[i].get())->getName());
             (m_deck.front().get())->applyEncounter(*(m_players[i].get()));
             m_deck.push(m_deck.front());
             m_deck.pop();
-            if((m_players[i].get())->getLevel()==PLAYERMAXLEVEL){
+            if((m_players[i].get())->getLevel()==PLAYER_MAX_LEVEL){
                 unique_ptr<Player> temp = std::move(m_players[i]);
+                int playersMoved = 0;
                 for(int j=0; j<i; j++){
                     if(isActive(*(m_players[j].get()))){
-                        for(int h=i; h>=j; h--){
+                        playersMoved = i - j;
+                        for(int h=i; h>j; h--){
                             m_players[h] = std::move(m_players[h-1]);
                         }
-                        m_players[j] = std::move(temp);
                         break;
                     }
                 }
+                m_players[i+playersMoved] = std::move(temp);
+                i--;
             }
-            if((m_players[i].get())->isKnockedOut()){
+            else if((m_players[i].get())->isKnockedOut()){
                 unique_ptr<Player> temp = std::move(m_players[i]);
-                for(int j=(int)m_players.size(); j>i; j--){
+                int playersMoved = 0;
+                for(int j=(int)m_players.size()-1; j>i; j--){
                     if(isActive(*(m_players[j].get()))){
-                        for(int h=i; h<=j; h++){
+                        playersMoved = j - i;
+                        for(int h=i; h<j; h++){
                             m_players[h] = std::move(m_players[h+1]);
                         }
-                        m_players[j] = std::move(temp);
                         break;
                     }
                 }
+                m_players[i+playersMoved] = std::move(temp);
+                i--;
             }
         }
     }
     m_numRounds++;
+    if(isGameOver()){
+        printGameEndMessage();
+    }
 }
 
 int Mtmchkin::getNumberOfRounds() const
@@ -145,8 +146,14 @@ int Mtmchkin::getNumberOfRounds() const
 
 void Mtmchkin::printLeaderBoard() const
 {
+    printLeaderBoardStartMessage();
     for(int i=0; i<(int)m_players.size(); i++){
-        cout<<*(m_players[i].get())<<endl;
+        std::cout<<(i+1);
+        Player *player = m_players[i].get();
+        for(int j=0; j<NUM_OF_SPACES_AFTER_RANKING; j++){
+            cout<<" ";
+        }
+        cout<<*player<<endl;
     }
 }
 
@@ -157,26 +164,21 @@ bool Mtmchkin::isGameOver() const{
     }
     return true;
 }
-        //get job
-//        m_players = vector<unique_ptr<Player>>; I think it was initialized
-//        string currJob;
-//        cin.getline(currJob, MAXNAMELENGTH, '\n');
-//        while (currJob != "Rouge" && currJob != "Wizard" && currJob != "Fighter") {
-//            printInvalidClass();
-//            playerName = getName();
-//            cin.getline(currJob, MAXNAMELENGTH, '\n');
-//        }
-//        if (currJob == "Rouge") {
-//            std::unique_ptr <Player> ptr(new Rouge(currName));
-//            vec.push_back(std::move(ptr));
-//        } else if (currJob == "Wizard") {
-//            std::unique_ptr <Player> ptr(new Wizard(currName));
-//            vec.push_back(std::move(ptr));
-//        } else if (currJob == "Fighter") {
-//            std::unique_ptr <Player> ptr(new Fighter(currName));
-//            vec.push_back(std::move(ptr));
-//        }
-//    }
+
+static map<string,shared_ptr<Card>> initializeMap()
+{
+    map<string,shared_ptr<Card>> cardsMap;
+    cardsMap[CARDS[(int) cardType::Goblin]] = shared_ptr<Card>(new Goblin());
+    cardsMap[CARDS[(int) cardType::Vampire]] = shared_ptr<Card>(new Vampire());
+    cardsMap[CARDS[(int) cardType::Dragon]] = shared_ptr<Card>(new Dragon());
+    cardsMap[CARDS[(int) cardType::Barfight]] = shared_ptr<Card>(new Barfight());
+    cardsMap[CARDS[(int) cardType::Pitfall]] = shared_ptr<Card>(new Pitfall());
+    cardsMap[CARDS[(int) cardType::Fairy]] = shared_ptr<Card>(new Fairy());
+    cardsMap[CARDS[(int) cardType::Merchant]] = shared_ptr<Card>(new Merchant());
+    cardsMap[CARDS[(int) cardType::Treasure]] = shared_ptr<Card>(new Treasure());
+    return cardsMap;
+}
+
 
 
 static vector<string> readFromFile(string fileName)
@@ -187,24 +189,17 @@ static vector<string> readFromFile(string fileName)
     }
     vector<string> result;
     int currLine = 1;
-    char line[MAXLINELEN];
-    initializeLine(line);
-    while (deck.getline(line, MAXLINELEN, '\n')){
-        int lineLen = 0;
-        while (line[lineLen]){
-            lineLen++;
-        }
-        string cardName(line, lineLen);
-        if (isRealCard(cardName)){
-            result.push_back(cardName);
+    string line;
+    while (getline(deck, line)){
+        if (isRealCard(line)){
+            result.push_back(line);
         }
         else{
             throw DeckFileFormatError(currLine);
         }
-        initializeLine(line);
         currLine++;
     }
-    if((int)result.size()<MINDECKSIZE){
+    if((int)result.size()<MIN_DECK_SIZE){
         throw DeckFileInvalidSize();
     }
     return result;
@@ -212,19 +207,12 @@ static vector<string> readFromFile(string fileName)
 
 static bool isRealCard(string card)
 {
-    for(int i=0; i<CARDTYPES; i++){
+    for(int i=0; i<CARD_TYPES; i++){
         if(card.compare(CARDS[i])==0){
             return true;
         }
     }
     return false;
-}
-
-static void initializeLine(char* line)
-{
-    for(int i=0; i<MAXLINELEN; i++){
-        line[i]='\0';
-    }
 }
 
 static string getPlayerName(){
@@ -238,7 +226,7 @@ static string getPlayerName(){
             flag=true;
         }
         for(int i=0;i<(int)result.size(); i++){
-            if(std::isalpha(result[i])){
+            if(!std::isalpha(result[i])){
                 flag=true;
             }
         }
@@ -259,7 +247,7 @@ static string getPlayerClass()
 
 static bool isValidClass(string playerClass)
 {
-    for(int i = 0; i < CLASSTYPES; i++){
+    for(int i = 0; i < CLASS_TYPES; i++){
         if(!playerClass.compare(CLASSES[i])){
             return true;
         }
@@ -281,7 +269,7 @@ static unique_ptr<Player> createPlayer(string playerName, string playerClass)
 
 static bool isActive(const Player& player)
 {
-    return (!player.isKnockedOut()||player.getLevel()!=PLAYERMAXLEVEL) ? true : false;
+    return (!player.isKnockedOut()&&player.getLevel()<PLAYER_MAX_LEVEL) ? true : false;
 }
 
 //static void rearrangeWin(vector<unique_ptr<Player>> players, int i)
@@ -297,16 +285,39 @@ static bool isActive(const Player& player)
 //    string currName;
 //    char space=0;
 //    printInsertPlayerMessage();
-////    cin.getline(currName,MAXNAMELENGTH,' ');
+////    cin.getline(currName,MAX_NAME_LENGTH,' ');
 //    getline(cin,currName,' ');
 //    std::regex expression([^a-zA-Z]);
 //    cin.getline(space,1);
 //    while(space!=' ' || !std::regex_search(currName,expression)){
 //        printInvalidName();
-////        cin.getline(currName,MAXNAMELENGTH,' ');
+////        cin.getline(currName,MAX_NAME_LENGTH,' ');
 //        getline(cin,currName,' ');
 //        getline(cin,space)
 //        cin.getline(space,1);
 //    }
 //    return currName;
 //}
+
+
+
+//get job
+//        m_players = vector<unique_ptr<Player>>; I think it was initialized
+//        string currJob;
+//        cin.getline(currJob, MAX_NAME_LENGTH, '\n');
+//        while (currJob != "Rouge" && currJob != "Wizard" && currJob != "Fighter") {
+//            printInvalidClass();
+//            playerName = getName();
+//            cin.getline(currJob, MAX_NAME_LENGTH, '\n');
+//        }
+//        if (currJob == "Rouge") {
+//            std::unique_ptr <Player> ptr(new Rouge(currName));
+//            vec.push_back(std::move(ptr));
+//        } else if (currJob == "Wizard") {
+//            std::unique_ptr <Player> ptr(new Wizard(currName));
+//            vec.push_back(std::move(ptr));
+//        } else if (currJob == "Fighter") {
+//            std::unique_ptr <Player> ptr(new Fighter(currName));
+//            vec.push_back(std::move(ptr));
+//        }
+//    }
