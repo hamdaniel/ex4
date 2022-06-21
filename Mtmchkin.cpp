@@ -84,8 +84,8 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
         string playerName = getPlayerName();
         string playerClass = getPlayerClass();
         while((!isValidName(playerName))||(!isValidClass(playerClass))){
-            string playerName = getPlayerName();
-            string playerClass = getPlayerClass();
+            playerName = getPlayerName();
+            playerClass = getPlayerClass();
         }
         m_players.push_back(createPlayer(playerName, playerClass));
     }
