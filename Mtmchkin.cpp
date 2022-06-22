@@ -66,6 +66,7 @@ static map<string,shared_ptr<Card>> initializeMap();
 static int getNumPlayers();
 static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum);
 static bool isMonster(string line);
+static bool isValidNumPlayers(string numPlayers);
 
 //static string getName();
 
@@ -73,7 +74,6 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
     printStartGameMessage();
     map<string, shared_ptr<Card>> cardsMap = initializeMap();
     vector<shared_ptr<Card>> deck = readFromFile(fileName, cardsMap);
-    m_numRounds=0;
     for(int i = 0; i < (int) deck.size(); i++){
         m_deck.push(deck[i]);
     }
@@ -115,8 +115,8 @@ void Mtmchkin::playRound()
                         break;
                     }
                 }
-                m_players[i+playersMoved] = std::move(temp);
-                i--;
+                m_players[i-playersMoved] = std::move(temp);
+//                i--;
             }
             else if((m_players[i].get())->isKnockedOut()){
                 unique_ptr<Player> temp = std::move(m_players[i]);
@@ -232,6 +232,7 @@ static string getPlayerName(){
 static bool isValidName(string playerName)
 {
     if(playerName.size()>15){
+        printInvalidName();
         return false;
     }
     for(int i = 0; i < (int)playerName.size(); i++){
@@ -246,7 +247,7 @@ static bool isValidName(string playerName)
 static string getPlayerClass()
 {
     string result;
-    std::getline(cin,result,'\n');
+    std::getline(cin,result);
     return result;
 }
 
@@ -282,11 +283,11 @@ static int getNumPlayers()
 {
     string numPlayers = "";
     printEnterTeamSizeMessage();
-    std::getline(cin, numPlayers, '\n');
-    std::regex expression ("^[2-6]");
-    while(!std::regex_search(numPlayers,expression)){
+    std::getline(cin, numPlayers);
+    while(!isValidNumPlayers(numPlayers)){
         printInvalidTeamSize();
-        std::getline(cin, numPlayers, '\n');
+        printEnterTeamSizeMessage();
+        std::getline(cin, numPlayers);
     }
     return std::stoi(numPlayers);
 }
@@ -321,6 +322,19 @@ static bool isMonster(string line)
     return false;
 }
 
+static bool isValidNumPlayers(string numPlayers)
+{
+    if(numPlayers.size()!=1){
+        return false;
+    }
+    if(!std::isdigit(numPlayers[0])){
+        return false;
+    }
+    if(std::stoi(numPlayers)<2||std::stoi(numPlayers)>6){
+        return false;
+    }
+    return true;
+}
 //static void rearrangeWin(vector<unique_ptr<Player>> players, int i)
 //{
 //

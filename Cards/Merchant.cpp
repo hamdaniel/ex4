@@ -11,8 +11,12 @@ using std::cin;
 
 const string MERCHANT_NAME = "Merchant";
 const int HEALTH_POTION =1;
+const int HEALTH_POTION_COST = 5;
 const int FORCE_BOOST =2;
+const int FORCE_BOOST_COST = 10;
 const int LEAVE =0;
+
+static bool isValid(string input);
 
 Merchant::Merchant() : Card(MERCHANT_NAME) {}
 
@@ -22,34 +26,51 @@ Merchant::Merchant() : Card(MERCHANT_NAME) {}
  */
 bool Merchant::applyEncounter(Player& player) {
     printMerchantInitialMessageForInteractiveEncounter(cout, player.getName(),player.getCoins());
-    int input;
-    cin >> input;
-    while (input!=HEALTH_POTION&&input!=FORCE_BOOST&&input!=LEAVE){
+    string rawInput;
+    getline(cin, rawInput);
+    while(!isValid(rawInput)){
         printInvalidInput();
-        cin >> input;
+        getline(cin, rawInput);
     }
-    if(input==HEALTH_POTION){
-        if(player.getCoins()<5){
-            printMerchantInsufficientCoins(cout);
-        }
-        else {
-            player.pay(5);
-            player.heal(1);
-            printMerchantSummary(cout, player.getName(),HEALTH_POTION,5);
-        }
+    int input = std::stoi(rawInput);
+    int paid = 0;
+    if (input == LEAVE) {
+        printMerchantSummary(cout, player.getName(), LEAVE, paid);
     }
-    else if(input==FORCE_BOOST){
-        if(player.getCoins()<10){
+    else if(input == HEALTH_POTION){
+        if (player.getCoins() < HEALTH_POTION_COST) {
             printMerchantInsufficientCoins(cout);
         }
         else{
-            player.pay(10);
-            player.buff(1);
-            printMerchantSummary(cout,player.getName(),FORCE_BOOST,10);
+            player.pay(HEALTH_POTION_COST);
+            paid = HEALTH_POTION_COST;
+            player.heal(1);
         }
+        printMerchantSummary(cout,player.getName(),HEALTH_POTION, paid);
     }
     else{
-        printMerchantSummary(cout,player.getName(),LEAVE,0);
+        if (player.getCoins() < FORCE_BOOST_COST) {
+            printMerchantInsufficientCoins(cout);
+        }
+        else{
+            player.pay(FORCE_BOOST_COST);
+            paid = FORCE_BOOST_COST;
+            player.buff(1);
+        }
+        printMerchantSummary(cout,player.getName(),FORCE_BOOST, paid);
     }
     return false;
+}
+
+static bool isValid(string input) {
+    if (input.size() != 1) {
+        return false;
+    }
+    if (!std::isdigit(input[0])) {
+        return false;
+    }
+    if (std::stoi(input)!=LEAVE && std::stoi(input)!=HEALTH_POTION && std::stoi(input)!=FORCE_BOOST){
+        return false;
+    }
+    return true;
 }

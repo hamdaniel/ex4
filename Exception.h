@@ -12,7 +12,7 @@ public:
 
     const char* what() const noexcept override
     {
-        return "Deck File Error: File not found\n";
+        return "Deck File Error: File not found";
     }
 };
 
@@ -35,7 +35,7 @@ class DeckFileInvalidSize : public std::exception{
 public:
     const char* what() const noexcept override
     {
-        return "Deck File Error: Deck size is invalid\n";
+        return "Deck File Error: Deck size is invalid";
     }
 };
 

@@ -1,8 +1,8 @@
 //
 // Created by user on 21/06/2022.
 //
-#include "Mtmchkin.h"
-#include "Exception.h"
+#include "../Mtmchkin.h"
+#include "../Exception.h"
 
 int main(){
     try{
