@@ -27,10 +27,14 @@ Merchant::Merchant() : Card(MERCHANT_NAME) {}
 bool Merchant::applyEncounter(Player& player) {
     printMerchantInitialMessageForInteractiveEncounter(cout, player.getName(),player.getCoins());
     string rawInput;
-    getline(cin, rawInput);
+    if(!std::getline(cin, rawInput)){
+        throw InvalidInput();
+    }
     while(!isValid(rawInput)){
         printInvalidInput();
-        getline(cin, rawInput);
+        if(!std::getline(cin, rawInput)){
+            throw InvalidInput();
+        }
     }
     int input = std::stoi(rawInput);
     int paid = 0;

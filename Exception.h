@@ -39,4 +39,12 @@ public:
     }
 };
 
+class InvalidInput : public std::exception{
+public:
+    const char* what() const noexcept override
+    {
+        return "Received input is invalid";
+    }
+};
+
 #endif //EX4_EXCEPTION_H

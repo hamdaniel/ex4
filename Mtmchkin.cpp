@@ -67,8 +67,8 @@ static int getNumPlayers();
 static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum);
 static bool isMonster(string line);
 static bool isValidNumPlayers(string numPlayers);
-
-//static string getName();
+static void rearrangeWin(vector<unique_ptr<Player>>& players, int winner);
+static void rearrangeLoss(vector<unique_ptr<Player>>& players, int loser);
 
 Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
     printStartGameMessage();
@@ -104,33 +104,10 @@ void Mtmchkin::playRound()
             m_deck.push(m_deck.front());
             m_deck.pop();
             if((m_players[i].get())->getLevel()==PLAYER_MAX_LEVEL){
-                unique_ptr<Player> temp = std::move(m_players[i]);
-                int playersMoved = 0;
-                for(int j=0; j<i; j++){
-                    if(isActive(*(m_players[j].get()))){
-                        playersMoved = i - j;
-                        for(int h=i; h>j; h--){
-                            m_players[h] = std::move(m_players[h-1]);
-                        }
-                        break;
-                    }
-                }
-                m_players[i-playersMoved] = std::move(temp);
-//                i--;
+                rearrangeWin(m_players, i);
             }
-            else if((m_players[i].get())->isKnockedOut()){
-                unique_ptr<Player> temp = std::move(m_players[i]);
-                int playersMoved = 0;
-                for(int j=(int)m_players.size()-1; j>i; j--){
-                    if(isActive(*(m_players[j].get()))){
-                        playersMoved = j - i;
-                        for(int h=i; h<j; h++){
-                            m_players[h] = std::move(m_players[h+1]);
-                        }
-                        break;
-                    }
-                }
-                m_players[i+playersMoved] = std::move(temp);
+            else if((m_players[i].get())->isKnockedOut()){//rearrangeLost()
+                rearrangeLoss(m_players,i);
                 i--;
             }
         }
@@ -192,7 +169,7 @@ static vector<shared_ptr<Card>> readFromFile(string fileName,map<string,shared_p
     vector<shared_ptr<Card>> result;
     int currLine = 1;
     string line;
-    while (getline(deck, line)){
+    while (std::getline(deck, line)){
         if (isRealCard(line)){
             result.push_back(cardsMap[line]);
         }
@@ -224,7 +201,9 @@ static bool isRealCard(string card)
 
 static string getPlayerName(){
     string result;
-    std::getline(cin,result,' ');
+    if(!std::getline(cin,result,' ')){
+        throw InvalidInput();
+    }
     return result;
 }
 
@@ -247,7 +226,9 @@ static bool isValidName(string playerName)
 static string getPlayerClass()
 {
     string result;
-    std::getline(cin,result);
+    if(!std::getline(cin,result)){
+        throw InvalidInput();
+    }
     return result;
 }
 
@@ -283,11 +264,15 @@ static int getNumPlayers()
 {
     string numPlayers = "";
     printEnterTeamSizeMessage();
-    std::getline(cin, numPlayers);
+    if(!std::getline(cin,numPlayers)){
+        throw InvalidInput();
+    }
     while(!isValidNumPlayers(numPlayers)){
         printInvalidTeamSize();
         printEnterTeamSizeMessage();
-        std::getline(cin, numPlayers);
+        if(!std::getline(cin,numPlayers)){
+            throw InvalidInput();
+        }
     }
     return std::stoi(numPlayers);
 }
@@ -296,7 +281,7 @@ static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> ca
 {
     string line;
     vector<string> result;
-    while(getline(deck, line)){
+    while(std::getline(deck, line)){
         if(!line.compare(GANG_END)){
             for(int i=0;i<(int)result.size();i++){
             }
@@ -335,52 +320,35 @@ static bool isValidNumPlayers(string numPlayers)
     }
     return true;
 }
-//static void rearrangeWin(vector<unique_ptr<Player>> players, int i)
-//{
-//
-//}
-//
-//static void rearrangeLoss(vector<unique_ptr<Player>> players, int i)
-//{
-//
-//}
-//static string getName(){
-//    string currName;
-//    char space=0;
-//    printInsertPlayerMessage();
-////    cin.getline(currName,MAX_NAME_LENGTH,' ');
-//    getline(cin,currName,' ');
-//    std::regex expression([^a-zA-Z]);
-//    cin.getline(space,1);
-//    while(space!=' ' || !std::regex_search(currName,expression)){
-//        printInvalidName();
-////        cin.getline(currName,MAX_NAME_LENGTH,' ');
-//        getline(cin,currName,' ');
-//        getline(cin,space)
-//        cin.getline(space,1);
-//    }
-//    return currName;
-//}
 
+static void rearrangeWin(vector<unique_ptr<Player>>& players, int winner)
+{
+    unique_ptr<Player> temp = std::move(players[winner]);
+    int playersMoved = 0;
+    for(int j=0; j<winner; j++){
+        if(isActive(*(players[j].get()))){
+            playersMoved = winner - j;
+            for(int h=winner; h>j; h--){
+                players[h] = std::move(players[h-1]);
+            }
+            break;
+        }
+    }
+    players[winner-playersMoved] = std::move(temp);
+}
 
-
-//get job
-//        m_players = vector<unique_ptr<Player>>; I think it was initialized
-//        string currJob;
-//        cin.getline(currJob, MAX_NAME_LENGTH, '\n');
-//        while (currJob != "Rouge" && currJob != "Wizard" && currJob != "Fighter") {
-//            printInvalidClass();
-//            playerName = getName();
-//            cin.getline(currJob, MAX_NAME_LENGTH, '\n');
-//        }
-//        if (currJob == "Rouge") {
-//            std::unique_ptr <Player> ptr(new Rouge(currName));
-//            vec.push_back(std::move(ptr));
-//        } else if (currJob == "Wizard") {
-//            std::unique_ptr <Player> ptr(new Wizard(currName));
-//            vec.push_back(std::move(ptr));
-//        } else if (currJob == "Fighter") {
-//            std::unique_ptr <Player> ptr(new Fighter(currName));
-//            vec.push_back(std::move(ptr));
-//        }
-//    }
+static void rearrangeLoss(vector<unique_ptr<Player>>& players, int loser)
+{
+    unique_ptr<Player> temp = std::move(players[loser]);
+    int playersMoved = 0;
+    for(int j=(int)players.size()-1; j>loser; j--){
+        if(isActive(*(players[j].get()))){
+            playersMoved = j - loser;
+            for(int h=loser; h<j; h++){
+                players[h] = std::move(players[h+1]);
+            }
+            break;
+        }
+    }
+    players[loser+playersMoved] = std::move(temp);
+}
