@@ -43,12 +43,15 @@ public:
      * The given player faces a monster and is granted loot and levels up
      * upon victory or loses health points and deals with other effects upon defeat
      * @param player the player who faces the monster
+     * @return true upon victory and false otherwise
      */
     virtual bool applyEncounter(Player& player) override;
 
     /**
      * the player lost against the monster and faces the consequences
      * @param player the poor player
+     * @return
+     *      void
      */
     virtual void badNews(Player& player);
 

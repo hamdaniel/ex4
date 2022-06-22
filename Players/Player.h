@@ -86,7 +86,6 @@ public:
     * increases the player's hp by the amount received as an argument.
     * if hp is already maxed out - does nothing.
     * @param hpPoints - the amount of hp points to be added.
-    *
     * @return
     *      void
     */
@@ -114,6 +113,8 @@ public:
     /**
     * adds the given amount of coins to the player's balance
     * @param coins the amount to be added
+    * @return
+    *      int
     */
     virtual void addCoins(const int& coins);
 
@@ -129,7 +130,6 @@ public:
 
     /**
     * return the attack force (level+force).
-    *
     * @return
     *      int
     */
