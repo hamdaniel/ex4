@@ -10,11 +10,11 @@ using std::cout;
 using std::cin;
 
 const string MERCHANT_NAME = "Merchant";
-const int HEALTH_POTION = "1";
+const string HEALTH_POTION = "1";
 const int HEALTH_POTION_COST = 5;
-const int FORCE_BOOST = "2";
+const string FORCE_BOOST = "2";
 const int FORCE_BOOST_COST = 10;
-const int LEAVE = 0;
+const string LEAVE = "0";
 
 static bool isValid(string input);
 
@@ -33,11 +33,11 @@ bool Merchant::applyEncounter(Player& player)
     }
     while(!isValid(input)){
         printInvalidInput();
-        if(!std::getline(cin, rawInput)){
+        if(!std::getline(cin, input)){
             throw InvalidInput();
         }
     }
-    int action = LEAVE;
+    string action = LEAVE;
     int paid = 0;
     if(!input.compare(HEALTH_POTION)){
         action = HEALTH_POTION;
@@ -55,11 +55,10 @@ bool Merchant::applyEncounter(Player& player)
             player.buff(1);
         }
     }
-    if(!action.compare(LEAVE) &&  paid == 0){
+    if(action.compare(LEAVE) &&  paid == 0){
         printMerchantInsufficientCoins(cout);
-        action = 0;
     }
-    printMerchantSummary(cout, player.getName(), action, paid);
+    printMerchantSummary(cout, player.getName(), std::stoi(action), paid);
     return false;
 }
 

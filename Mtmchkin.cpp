@@ -133,7 +133,7 @@ void Mtmchkin::printLeaderBoard() const
 {
     printLeaderBoardStartMessage();
     for(int i=0; i<(int)m_players.size(); i++){
-        printPlayerLeaderBoard(i + 1, m_players[i].get());
+        printPlayerLeaderBoard(i + 1, *m_players[i].get());
     }
 }
 
