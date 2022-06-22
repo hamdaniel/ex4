@@ -4,28 +4,18 @@
 
 #ifndef EX4_FIGHTER_H
 #define EX4_FIGHTER_H
-#include "Player.h"
+
 #include <string>
 #include <iostream>
+#include "Player.h"
 
 class Fighter : public Player {
 
-    /**
-     * concatenates the fighter according to the required format
-     * @param os the stream to which the fighter is concatenated
-     * @param fighter fighter to be concatenated
-     * @return the stream with the fighter concatenated to it
-     */
-    friend std::ostream& operator<<(std::ostream& os, const Fighter& fighter);
-
-private:
-
 public:
+
     /**
      * C'tor of Fighter class
-     *
      * @param name - The name of the Fighter.
-     *
      */
     Fighter(const std::string name);
 

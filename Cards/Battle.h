@@ -50,8 +50,6 @@ public:
     /**
      * the player lost against the monster and faces the consequences
      * @param player the poor player
-     * @return
-     *      void
      */
     virtual void badNews(Player& player);
 

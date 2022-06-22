@@ -29,47 +29,58 @@
 #include <memory>
 
 using std::string;
+
 using std::ifstream;
+
 using std::cout;
 using std::cin;
 using std::endl;
+
+using std::vector;
 using std::queue;
 using std::map;
+
 using std::shared_ptr;
 using std::unique_ptr;
-using std::vector;
 
 const int MAX_NAME_LENGTH = 15;
-const int MAX_LINE_LENGTH = 9;
-const int CARD_TYPES = 8;
-const int CLASS_TYPES = 3;
-const int MIN_DECK_SIZE = 5;
 const int PLAYER_MAX_LEVEL = 10;
-const int NUM_OF_SPACES_AFTER_RANKING = 10;
+const int CARD_TYPES = 8;
+const int MIN_DECK_SIZE = 5;
+const int CLASS_TYPES = 3;
+
 const string GANG = "Gang";
 const string GANG_END = "EndGang";
-const char* CARDS[CARD_TYPES] = {"Goblin", "Vampire", "Dragon", "Barfight", "Pitfall", "Fairy", "Merchant", "Treasure"};
+
+const char* CARDS[CARD_TYPES] =
+        {"Goblin", "Vampire", "Dragon", "Barfight", "Pitfall", "Fairy", "Merchant", "Treasure"};
 enum class cardType {Goblin, Vampire, Dragon, Barfight, Pitfall, Fairy, Merchant, Treasure};
 
-const string CLASSES[CLASS_TYPES] = {"Rogue", "Wizard", "Fighter"};
+const string CLASSES[CLASS_TYPES] =
+        {"Rogue", "Wizard", "Fighter"};
 enum class classType {Rogue, Wizard, Fighter};
 
-static vector<shared_ptr<Card>> readFromFile(string fileName,map<string,shared_ptr<Card>> cardsMap);
-static bool isRealCard(string card);
-static string getPlayerName();
-static string getPlayerClass();
-static bool isValidClass(const string playerClass);
-static bool isValidName(const string playerName);
-static unique_ptr<Player> createPlayer(const string playerName, const string playerClass);
-static bool isActive(const Player& player);
 static map<string,shared_ptr<Card>> initializeMap();
-static int getNumPlayers();
+static vector<shared_ptr<Card>> readFromFile(string fileName, map<string,shared_ptr<Card>> cardsMap);
+static bool isRealCard(string card);
 static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum);
 static bool isMonster(string line);
+
+static int getNumPlayers();
 static bool isValidNumPlayers(string numPlayers);
+static string getPlayerName();
+static bool isValidName(const string playerName);
+static string getPlayerClass();
+static bool isValidClass(const string playerClass);
+static unique_ptr<Player> createPlayer(const string playerName, const string playerClass);
+
+static bool isActive(const Player& player);
 static void rearrangeWin(vector<unique_ptr<Player>>& players, int winner);
 static void rearrangeLoss(vector<unique_ptr<Player>>& players, int loser);
 
+
+
+///******************************************Mtmchkin member functions******************************************///
 Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
     printStartGameMessage();
     map<string, shared_ptr<Card>> cardsMap = initializeMap();
@@ -82,7 +93,7 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
         printInsertPlayerMessage();
         string playerName = getPlayerName();
         string playerClass = getPlayerClass();
-        while((!isValidName(playerName))||(!isValidClass(playerClass))){
+        while((!isValidName(playerName)) || (!isValidClass(playerClass))){
             playerName = getPlayerName();
             playerClass = getPlayerClass();
         }
@@ -93,12 +104,12 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
 
 void Mtmchkin::playRound()
 {
-    printRoundStartMessage(getNumberOfRounds()+1);
-    for(int i=0; i<(int)m_players.size(); i++){
+    printRoundStartMessage(getNumberOfRounds() + 1);
+    for(int i = 0; i < (int)m_players.size(); i++){
         if(isActive(*m_players[i].get())){
             printTurnStartMessage((m_players[i].get())->getName());
             if((m_deck.front().get())->applyEncounter(*(m_players[i].get()))){
-                printWinBattle(m_players[i].get()->getName(),m_deck.front().get()->getName());
+                printWinBattle(m_players[i].get()->getName(), m_deck.front().get()->getName());
                 (m_players[i].get())->levelUp();
             }
             m_deck.push(m_deck.front());
@@ -106,8 +117,8 @@ void Mtmchkin::playRound()
             if((m_players[i].get())->getLevel()==PLAYER_MAX_LEVEL){
                 rearrangeWin(m_players, i);
             }
-            else if((m_players[i].get())->isKnockedOut()){//rearrangeLost()
-                rearrangeLoss(m_players,i);
+            else if((m_players[i].get())->isKnockedOut()){
+                rearrangeLoss(m_players, i);
                 i--;
             }
         }
@@ -118,32 +129,30 @@ void Mtmchkin::playRound()
     }
 }
 
-int Mtmchkin::getNumberOfRounds() const
-{
-    return m_numRounds;
-}
-
 void Mtmchkin::printLeaderBoard() const
 {
     printLeaderBoardStartMessage();
     for(int i=0; i<(int)m_players.size(); i++){
-        std::cout<<(i+1);
-        Player *player = m_players[i].get();
-        for(int j=0; j<NUM_OF_SPACES_AFTER_RANKING; j++){
-            cout<<" ";
-        }
-        cout<<*player<<endl;
+        printPlayerLeaderBoard(i + 1, m_players[i].get());
     }
 }
 
 bool Mtmchkin::isGameOver() const{
-    for(int i=0; i<(int)m_players.size(); i++){
+    for(int i = 0; i < (int)m_players.size(); i++){
         if(isActive(*(m_players[i].get())))
             return false;
     }
     return true;
 }
 
+int Mtmchkin::getNumberOfRounds() const
+{
+    return m_numRounds;
+}
+
+///******************************************Mtmchkin C'tor functions******************************************///
+
+///*****************************************Deck helper functions******************************************///
 static map<string,shared_ptr<Card>> initializeMap()
 {
     map<string,shared_ptr<Card>> cardsMap;
@@ -158,9 +167,7 @@ static map<string,shared_ptr<Card>> initializeMap()
     return cardsMap;
 }
 
-
-
-static vector<shared_ptr<Card>> readFromFile(string fileName,map<string,shared_ptr<Card>> cardsMap)
+static vector<shared_ptr<Card>> readFromFile(string fileName, map<string, shared_ptr<Card>> cardsMap)
 {
     ifstream deck(fileName);
     if (!deck){
@@ -174,9 +181,9 @@ static vector<shared_ptr<Card>> readFromFile(string fileName,map<string,shared_p
             result.push_back(cardsMap[line]);
         }
         else if(!line.compare(GANG)) {
-            vector<string> gangMembers = buildGang(deck, cardsMap, currLine+1);
+            vector<string> gangMembers = buildGang(deck, cardsMap, currLine + 1);
             result.push_back(shared_ptr<Card>(new Gang(gangMembers)));
-            currLine+=((int)gangMembers.size()+1);
+            currLine += ((int)gangMembers.size() + 1);
         }
         else{
             throw DeckFileFormatError(currLine);
@@ -191,26 +198,88 @@ static vector<shared_ptr<Card>> readFromFile(string fileName,map<string,shared_p
 
 static bool isRealCard(string card)
 {
-    for(int i=0; i<CARD_TYPES; i++){
-        if(card.compare(CARDS[i])==0){
+    for(int i = 0; i < CARD_TYPES; i++){
+        if(card.compare(CARDS[i]) == 0){
             return true;
         }
     }
     return false;
 }
 
+static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum)
+{
+    string line;
+    vector<string> result;
+    while(std::getline(deck, line)){
+        if(!line.compare(GANG_END)){
+            for(int i = 0; i < (int)result.size(); i++){
+            }
+            return result;
+        }
+        else if(isMonster(line)){
+            result.push_back(line);
+        }
+        else{
+            throw DeckFileFormatError(linenum);
+        }
+        linenum++;
+    }
+    throw DeckFileFormatError(linenum);
+}
+
+static bool isMonster(string line)
+{
+    if((!line.compare(CARDS[(int)cardType::Dragon])) || (!line.compare(CARDS[(int)cardType::Goblin]))
+       || (!line.compare(CARDS[(int)cardType::Vampire]))){
+        return true;
+    }
+    return false;
+}
+
+
+///****************************************Players helper functions****************************************///
+static int getNumPlayers()
+{
+    string numPlayers = "";
+    printEnterTeamSizeMessage();
+    if(!std::getline(cin,numPlayers)){
+        throw InvalidInput();
+    }
+    while(!isValidNumPlayers(numPlayers)){
+        printInvalidTeamSize();
+        printEnterTeamSizeMessage();
+        if(!std::getline(cin,numPlayers)){
+            throw InvalidInput();
+        }
+    }
+    return std::stoi(numPlayers);
+}
+
+static bool isValidNumPlayers(string numPlayers)
+{
+    if(numPlayers.size()!=1){
+        return false;
+    }
+    if(!std::isdigit(numPlayers[0])){
+        return false;
+    }
+    if(std::stoi(numPlayers)<2||std::stoi(numPlayers)>6){
+        return false;
+    }
+    return true;
+}
+
 static string getPlayerName(){
     string result;
-    if(!std::getline(cin,result,' ')){
+    if(!std::getline(cin, result, ' ')){
         throw InvalidInput();
     }
     return result;
 }
 
-
 static bool isValidName(string playerName)
 {
-    if(playerName.size()>15){
+    if(playerName.size() > MAX_NAME_LENGTH){
         printInvalidName();
         return false;
     }
@@ -226,7 +295,7 @@ static bool isValidName(string playerName)
 static string getPlayerClass()
 {
     string result;
-    if(!std::getline(cin,result)){
+    if(!std::getline(cin, result)){
         throw InvalidInput();
     }
     return result;
@@ -255,100 +324,43 @@ static unique_ptr<Player> createPlayer(string playerName, string playerClass)
         return unique_ptr<Player>(new Fighter(playerName));
 }
 
+
+
+
+///***************************************Play Round helper functions**************************************///
 static bool isActive(const Player& player)
 {
-    return (!player.isKnockedOut()&&player.getLevel()<PLAYER_MAX_LEVEL) ? true : false;
-}
-
-static int getNumPlayers()
-{
-    string numPlayers = "";
-    printEnterTeamSizeMessage();
-    if(!std::getline(cin,numPlayers)){
-        throw InvalidInput();
-    }
-    while(!isValidNumPlayers(numPlayers)){
-        printInvalidTeamSize();
-        printEnterTeamSizeMessage();
-        if(!std::getline(cin,numPlayers)){
-            throw InvalidInput();
-        }
-    }
-    return std::stoi(numPlayers);
-}
-
-static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum)
-{
-    string line;
-    vector<string> result;
-    while(std::getline(deck, line)){
-        if(!line.compare(GANG_END)){
-            for(int i=0;i<(int)result.size();i++){
-            }
-            return result;
-        }
-        else if(isMonster(line)){
-            result.push_back(line);
-        }
-        else{
-            throw DeckFileFormatError(linenum);
-        }
-        linenum++;
-    }
-    throw DeckFileFormatError(linenum);
-}
-
-static bool isMonster(string line)
-{
-    if((!line.compare(CARDS[(int)cardType::Dragon]))||(!line.compare(CARDS[(int)cardType::Goblin]))
-                                                    ||(!line.compare(CARDS[(int)cardType::Vampire]))){
-        return true;
-    }
-    return false;
-}
-
-static bool isValidNumPlayers(string numPlayers)
-{
-    if(numPlayers.size()!=1){
-        return false;
-    }
-    if(!std::isdigit(numPlayers[0])){
-        return false;
-    }
-    if(std::stoi(numPlayers)<2||std::stoi(numPlayers)>6){
-        return false;
-    }
-    return true;
+    return (!player.isKnockedOut() && player.getLevel() < PLAYER_MAX_LEVEL) ? true : false;
 }
 
 static void rearrangeWin(vector<unique_ptr<Player>>& players, int winner)
 {
     unique_ptr<Player> temp = std::move(players[winner]);
     int playersMoved = 0;
-    for(int j=0; j<winner; j++){
+    for(int j = 0; j < winner; j++){
         if(isActive(*(players[j].get()))){
             playersMoved = winner - j;
-            for(int h=winner; h>j; h--){
-                players[h] = std::move(players[h-1]);
+            for(int h = winner; h > j; h--){
+                players[h] = std::move(players[h - 1]);
             }
             break;
         }
     }
-    players[winner-playersMoved] = std::move(temp);
+    players[winner - playersMoved] = std::move(temp);
 }
 
 static void rearrangeLoss(vector<unique_ptr<Player>>& players, int loser)
 {
     unique_ptr<Player> temp = std::move(players[loser]);
     int playersMoved = 0;
-    for(int j=(int)players.size()-1; j>loser; j--){
+    for(int j = (int)players.size() - 1; j > loser; j--){
         if(isActive(*(players[j].get()))){
             playersMoved = j - loser;
-            for(int h=loser; h<j; h++){
-                players[h] = std::move(players[h+1]);
+            for(int h = loser; h < j; h++){
+                players[h] = std::move(players[h + 1]);
             }
             break;
         }
     }
-    players[loser+playersMoved] = std::move(temp);
+    players[loser + playersMoved] = std::move(temp);
 }

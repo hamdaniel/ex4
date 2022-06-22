@@ -24,8 +24,7 @@ public:
     /**
     * The Player encounters the Merchant and can choose to whether to buy goods from him or not
     * @param Player the Player that encountered the Merchant
-    * @return
-    *       false - always
+    * @return always false
     */
     bool applyEncounter(Player& player) override;
 

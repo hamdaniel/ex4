@@ -7,26 +7,22 @@
 #include "../utilities.h"
 
 using std::cout;
-using std::string;
-using std::ostream;
 using std::endl;
 
-const string FIGHTERJOB="Fighter";
+using std::ostream;
+using std::string;
+
+
+const string FIGHTERJOB = "Fighter";
 
 Fighter::Fighter(const string name) : Player(name){}
 
 int Fighter::getAttackStrength() const
 {
-    return getForce()*2+getLevel();
+    return getForce() * 2 + getLevel();
 }
 
 void Fighter::printPlayerInfo(ostream &os)  const
 {
-    printPlayerDetails(os,getName(),FIGHTERJOB,getLevel(),getForce(),getHealthPoints(),getCoins());
-}
-
-std::ostream& operator<<(std::ostream& os, const Fighter& fighter)
-{
-    fighter.printPlayerInfo(os);
-    return os;
+    printPlayerDetails(os, getName(), FIGHTERJOB, getLevel(), getForce(), getHealthPoints(), getCoins());
 }

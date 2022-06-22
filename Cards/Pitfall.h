@@ -24,8 +24,7 @@ public:
     /**
      * The player falls in a pitfall and is damaged unless he is a rogue
      * @param player the player that fell to the trap
-     * @return
-     *      false - always
+     * @return always false
      */
     bool applyEncounter(Player& player) override;
 

@@ -10,14 +10,6 @@
 
 class Wizard : public Player{
 
-    /**
-     * concatenates the wizard according to the required format
-     * @param os the stream to which the wizard is concatenated
-     * @param wizard wizard to be concatenated
-     * @return the stream with the wizard concatenated to it
-     */
-    friend std::ostream& operator<<(std::ostream& os, const Wizard& wizard);
-private:
 public:
     /**
      * C'tor of Wizard class

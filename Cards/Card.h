@@ -32,7 +32,7 @@ public:
 
     /**
     * Card C'tor(Card is pure virtual)
-    * @param name - The name of the card.
+    * @param name The name of the card.
     *
     */
     Card(const std::string& name);
@@ -45,9 +45,7 @@ public:
     /**
      * The player whose turn it is draws a card from the deck and faces its contents
      * @param Player the player which draws the card
-     * @return
-     *  true - if the player won against a battle card
-     *  false - else
+     * @return true if the player won against a battle card, false otherwise
      */
     virtual bool applyEncounter(Player& Player)=0;
 

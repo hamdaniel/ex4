@@ -8,15 +8,17 @@
 using std::string;
 
 const string FAIRY_NAME = "Fairy";
+const int TO_HEAL = 10;
 
 Fairy::Fairy() : Card(FAIRY_NAME) {}
 
-bool Fairy::applyEncounter(Player& player) {
-    if(dynamic_cast<Wizard*>(&player)== nullptr){
+bool Fairy::applyEncounter(Player& player)
+{
+    if(dynamic_cast<Wizard*>(&player) == nullptr){
         printFairyMessage(false);
         return false;
     }
-    player.heal(10);
+    player.heal(TO_HEAL);
     printFairyMessage(true);
     return false;
 }

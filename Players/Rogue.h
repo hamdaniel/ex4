@@ -10,13 +10,6 @@
 
 class Rogue : public Player{
 
-    /**
-     * concatenates the rogue according to the required format
-     * @param os the stream to which the rogue is concatenated
-     * @param rogue Rogue to be concatenated
-     * @return the stream with the rogue concatenated to it
-     */
-    friend std::ostream& operator<<(std::ostream& os, const Rogue& rogue);
 public:
     /**
      * C'tor of Rogue class

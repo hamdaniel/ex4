@@ -18,16 +18,10 @@ Wizard::Wizard(const string name) : Player(name){}
 
 void Wizard::heal(const int &hpPoints)
 {
-    Player::heal(2*hpPoints);
+    Player::heal(2 * hpPoints);
 }
 
 void Wizard::printPlayerInfo(ostream &os) const
 {
-    printPlayerDetails(os,getName(),WIZARDJOB,getLevel(),getForce(),getHealthPoints(),getCoins());
-}
-
-std::ostream& operator<<(std::ostream& os, const Wizard& wizard)
-{
-    wizard.printPlayerInfo(os);
-    return os;
+    printPlayerDetails(os, getName(), WIZARDJOB, getLevel(), getForce(), getHealthPoints(), getCoins());
 }

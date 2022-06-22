@@ -10,6 +10,7 @@
 
 using std::string;
 using std::ostream;
+
 const string DRAGON = "Dragon";
 
 Battle::Battle(string name, int force, int damage, int coins):
@@ -21,13 +22,14 @@ Battle::Battle(string name, int force, int damage, int coins):
 void Battle::printCardInfo(ostream& os) const
 {
     printCardDetails(os, this->getName());
-    bool isDragon = (!(this->getName().compare(DRAGON)))?true:false;
-    printMonsterDetails(os,this->m_force,this->m_damage,this->m_loot, isDragon);
+    bool isDragon = (!(this->getName().compare(DRAGON))) ? true : false;
+    printMonsterDetails(os, this->m_force, this->m_damage, this->m_loot, isDragon);
     printEndOfCardDetails(os);
 }
 
-bool Battle::applyEncounter(Player& player) {
-    if (player.getAttackStrength()>=m_force) {
+bool Battle::applyEncounter(Player& player)
+{
+    if (player.getAttackStrength() >= m_force) {
         player.addCoins(m_loot);
         return true;
     }
@@ -39,6 +41,6 @@ bool Battle::applyEncounter(Player& player) {
 
 void Battle::badNews(Player &player)
 {
-    printLossBattle(player.getName(),getName());
+    printLossBattle(player.getName(), getName());
     player.damage(m_damage);
 }
