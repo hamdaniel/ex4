@@ -32,7 +32,7 @@ public:
      * @param damage monster's damage to the player upon defeat
      * @param loot loot granted to the player upon victory
      */
-    Battle(std::string name, int force, int damage, int loot);
+    Battle(const std::string name, const int force, const int damage, const int loot) ;
 
     /**
      * Default Battle D'tor

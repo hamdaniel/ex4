@@ -18,7 +18,7 @@ class Gang : public Card {
 
 private:
 
-    std::vector<std::shared_ptr<Battle>> m_monsters;
+    std::vector<std::unique_ptr<Battle>> m_monsters;
 
 public:
 
@@ -26,7 +26,19 @@ public:
      * Gang C'tor
      * @param monsters the monsters in the gang
      */
-    Gang(std::vector<std::string>& monsters);
+    Gang(const std::vector<std::string>& monsters);
+
+    /**
+     * Gang copy C'tor
+     */
+    Gang(const Gang& other);
+
+    /**
+     * Gang assignment operator
+     * @param other gang to be assigned
+     * @return a reference to the assigned gang;
+     */
+    Gang& operator=(const Gang& other);
 
     /**
      * The player faces a gang of monsters one by one and will receive loot for every defeated monster,
@@ -35,6 +47,8 @@ public:
      * @return true upon victory and false otherwise
      */
     bool applyEncounter(Player& player) override;
+
+
 };
 
 

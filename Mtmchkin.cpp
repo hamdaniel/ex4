@@ -50,20 +50,19 @@ const int MIN_DECK_SIZE = 5;
 const int CLASS_TYPES = 3;
 
 const string GANG = "Gang";
-const string GANG_END = "EndGang";
+const string END_GANG = "EndGang";
 
 const char* CARDS[CARD_TYPES] =
         {"Goblin", "Vampire", "Dragon", "Barfight", "Pitfall", "Fairy", "Merchant", "Treasure"};
-enum class cardType {Goblin, Vampire, Dragon, Barfight, Pitfall, Fairy, Merchant, Treasure};
+enum class CardType {Goblin, Vampire, Dragon, Barfight, Pitfall, Fairy, Merchant, Treasure};
 
 const string CLASSES[CLASS_TYPES] =
         {"Rogue", "Wizard", "Fighter"};
 enum class classType {Rogue, Wizard, Fighter};
 
-static map<string,shared_ptr<Card>> initializeMap();
-static vector<shared_ptr<Card>> readFromFile(string fileName, map<string,shared_ptr<Card>> cardsMap);
+static vector<string> readFromFile(string fileName);
 static bool isRealCard(string card);
-static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum);
+static bool isValidGang(ifstream& deck, string line, vector<string>& result, int& lineNum);
 static bool isMonster(string line);
 
 static int getNumPlayers();
@@ -75,19 +74,18 @@ static bool isValidClass(const string playerClass);
 static unique_ptr<Player> createPlayer(const string playerName, const string playerClass);
 
 static bool isActive(const Player& player);
-static void rearrangeWin(vector<unique_ptr<Player>>& players, int winner);
-static void rearrangeLoss(vector<unique_ptr<Player>>& players, int loser);
+static void rearrangeOnWin(vector<unique_ptr<Player>>& players, int winner);
+static void rearrangeOnLoss(vector<unique_ptr<Player>>& players, int loser);
 
 
 
 ///******************************************Mtmchkin member functions******************************************///
 Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
     printStartGameMessage();
-    map<string, shared_ptr<Card>> cardsMap = initializeMap();
-    vector<shared_ptr<Card>> deck = readFromFile(fileName, cardsMap);
-    for(int i = 0; i < (int) deck.size(); i++){
-        m_deck.push(deck[i]);
+    vector<string> deck = readFromFile(fileName);
+    for(unsigned int i=0;i<deck.size();i++){
     }
+    initializeDeck(deck);
     int numPlayers=getNumPlayers();
     for(int i = 0; i < numPlayers; i++){
         printInsertPlayerMessage();
@@ -99,26 +97,25 @@ Mtmchkin::Mtmchkin(const std::string fileName) : m_numRounds(0){
         }
         m_players.push_back(createPlayer(playerName, playerClass));
     }
-
 }
 
 void Mtmchkin::playRound()
 {
     printRoundStartMessage(getNumberOfRounds() + 1);
-    for(int i = 0; i < (int)m_players.size(); i++){
+    for(unsigned int i = 0; i < m_players.size(); i++){
         if(isActive(*m_players[i].get())){
             printTurnStartMessage((m_players[i].get())->getName());
             if((m_deck.front().get())->applyEncounter(*(m_players[i].get()))){
                 printWinBattle(m_players[i].get()->getName(), m_deck.front().get()->getName());
                 (m_players[i].get())->levelUp();
             }
-            m_deck.push(m_deck.front());
+            m_deck.push(std::move(m_deck.front()));
             m_deck.pop();
             if((m_players[i].get())->getLevel()==PLAYER_MAX_LEVEL){
-                rearrangeWin(m_players, i);
+                rearrangeOnWin(m_players, i);
             }
             else if((m_players[i].get())->isKnockedOut()){
-                rearrangeLoss(m_players, i);
+                rearrangeOnLoss(m_players, i);
                 i--;
             }
         }
@@ -132,13 +129,13 @@ void Mtmchkin::playRound()
 void Mtmchkin::printLeaderBoard() const
 {
     printLeaderBoardStartMessage();
-    for(int i=0; i<(int)m_players.size(); i++){
+    for(unsigned int i=0; i < m_players.size(); i++){
         printPlayerLeaderBoard(i + 1, *m_players[i].get());
     }
 }
 
 bool Mtmchkin::isGameOver() const{
-    for(int i = 0; i < (int)m_players.size(); i++){
+    for(unsigned int i = 0; i < m_players.size(); i++){
         if(isActive(*(m_players[i].get())))
             return false;
     }
@@ -150,49 +147,84 @@ int Mtmchkin::getNumberOfRounds() const
     return m_numRounds;
 }
 
+void Mtmchkin::initializeDeck(vector<string> deck)
+{
+    for(unsigned int i = 0; i < deck.size(); i++){
+        if(!deck[i].compare(CARDS[(int)CardType::Vampire])){
+            m_deck.push(unique_ptr<Card>(new Vampire()));
+        }
+        else if(!deck[i].compare(CARDS[(int)CardType::Goblin])){
+            m_deck.push(unique_ptr<Card>(new Goblin()));
+        }
+        else if(!deck[i].compare(CARDS[(int)CardType::Dragon])){
+            m_deck.push(unique_ptr<Card>(new Dragon()));
+        }
+        else if(!deck[i].compare(CARDS[(int)CardType::Barfight])){
+            m_deck.push(unique_ptr<Card>(new Barfight()));
+        }
+        else if(!deck[i].compare(CARDS[(int)CardType::Treasure])){
+            m_deck.push(unique_ptr<Card>(new Treasure()));
+        }
+        else if(!deck[i].compare(CARDS[(int)CardType::Pitfall])){
+            m_deck.push(unique_ptr<Card>(new Pitfall()));
+        }
+        else if(!deck[i].compare(CARDS[(int)CardType::Fairy])){
+            m_deck.push(unique_ptr<Card>(new Fairy()));
+        }
+        else if(!deck[i].compare(CARDS[(int)CardType::Merchant])){
+            m_deck.push(unique_ptr<Card>(new Merchant()));
+        }
+        else if(!deck[i].compare(GANG)){
+            vector<string> gangsters;
+            i++;
+            while(deck[i].compare(END_GANG)){
+                gangsters.push_back(deck[i]);
+                i++;
+            }
+            m_deck.push(unique_ptr<Card>(new Gang(gangsters)));
+        }
+
+    }
+}
+
+
 ///******************************************Mtmchkin C'tor functions******************************************///
 
 ///*****************************************Deck helper functions******************************************///
-static map<string,shared_ptr<Card>> initializeMap()
-{
-    map<string,shared_ptr<Card>> cardsMap;
-    cardsMap[CARDS[(int) cardType::Goblin]] = shared_ptr<Card>(new Goblin());
-    cardsMap[CARDS[(int) cardType::Vampire]] = shared_ptr<Card>(new Vampire());
-    cardsMap[CARDS[(int) cardType::Dragon]] = shared_ptr<Card>(new Dragon());
-    cardsMap[CARDS[(int) cardType::Barfight]] = shared_ptr<Card>(new Barfight());
-    cardsMap[CARDS[(int) cardType::Pitfall]] = shared_ptr<Card>(new Pitfall());
-    cardsMap[CARDS[(int) cardType::Fairy]] = shared_ptr<Card>(new Fairy());
-    cardsMap[CARDS[(int) cardType::Merchant]] = shared_ptr<Card>(new Merchant());
-    cardsMap[CARDS[(int) cardType::Treasure]] = shared_ptr<Card>(new Treasure());
-    return cardsMap;
-}
-
-static vector<shared_ptr<Card>> readFromFile(string fileName, map<string, shared_ptr<Card>> cardsMap)
+static vector<string> readFromFile(string fileName)
 {
     ifstream deck(fileName);
     if (!deck){
         throw DeckFileNotFound();
     }
-    vector<shared_ptr<Card>> result;
+    vector<string> result;
     int currLine = 1;
+    int numCards = 0;
     string line;
     while (std::getline(deck, line)){
         if (isRealCard(line)){
-            result.push_back(cardsMap[line]);
+            result.push_back(line);
+            numCards++;
         }
-        else if(!line.compare(GANG)) {
-            vector<string> gangMembers = buildGang(deck, cardsMap, currLine + 1);
-            result.push_back(shared_ptr<Card>(new Gang(gangMembers)));
-            currLine += ((int)gangMembers.size() + 1);
+        else if (!line.compare(GANG)){
+            result.push_back(line);
+            if(!isValidGang(deck, line, result, currLine)){
+                deck.close();
+                throw DeckFileFormatError(currLine);
+            }
+            numCards++;
         }
         else{
+            deck.close();
             throw DeckFileFormatError(currLine);
         }
         currLine++;
     }
-    if((int)result.size()<MIN_DECK_SIZE){
+    if(numCards<MIN_DECK_SIZE){
+        deck.close();
         throw DeckFileInvalidSize();
     }
+    deck.close();
     return result;
 }
 
@@ -206,31 +238,27 @@ static bool isRealCard(string card)
     return false;
 }
 
-static vector<string> buildGang(ifstream& deck, map<string, shared_ptr<Card>> cardsMap, int linenum)
+static bool isValidGang(ifstream& deck, string line, vector<string>& result, int& lineNum)
 {
-    string line;
-    vector<string> result;
     while(std::getline(deck, line)){
-        if(!line.compare(GANG_END)){
-            for(int i = 0; i < (int)result.size(); i++){
-            }
-            return result;
+        if(!line.compare(END_GANG)){
+            result.push_back(END_GANG);
+            lineNum++;
+            return true;
         }
-        else if(isMonster(line)){
-            result.push_back(line);
+        else if(!isMonster(line)){
+            return false;
         }
-        else{
-            throw DeckFileFormatError(linenum);
-        }
-        linenum++;
+        result.push_back(line);
+        lineNum++;
     }
-    throw DeckFileFormatError(linenum);
+    return false;
 }
 
 static bool isMonster(string line)
 {
-    if((!line.compare(CARDS[(int)cardType::Dragon])) || (!line.compare(CARDS[(int)cardType::Goblin]))
-       || (!line.compare(CARDS[(int)cardType::Vampire]))){
+    if((!line.compare(CARDS[(int)CardType::Dragon])) || (!line.compare(CARDS[(int)CardType::Goblin]))
+       || (!line.compare(CARDS[(int)CardType::Vampire]))){
         return true;
     }
     return false;
@@ -283,7 +311,7 @@ static bool isValidName(string playerName)
         printInvalidName();
         return false;
     }
-    for(int i = 0; i < (int)playerName.size(); i++){
+    for(unsigned int i = 0; i < playerName.size(); i++){
         if(!std::isalpha(playerName[i])){
             printInvalidName();
             return false;
@@ -333,7 +361,7 @@ static bool isActive(const Player& player)
     return (!player.isKnockedOut() && player.getLevel() < PLAYER_MAX_LEVEL) ? true : false;
 }
 
-static void rearrangeWin(vector<unique_ptr<Player>>& players, int winner)
+static void rearrangeOnWin(vector<unique_ptr<Player>>& players, int winner)
 {
     unique_ptr<Player> temp = std::move(players[winner]);
     int playersMoved = 0;
@@ -349,7 +377,7 @@ static void rearrangeWin(vector<unique_ptr<Player>>& players, int winner)
     players[winner - playersMoved] = std::move(temp);
 }
 
-static void rearrangeLoss(vector<unique_ptr<Player>>& players, int loser)
+static void rearrangeOnLoss(vector<unique_ptr<Player>>& players, int loser)
 {
     unique_ptr<Player> temp = std::move(players[loser]);
     int playersMoved = 0;

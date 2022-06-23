@@ -13,6 +13,14 @@
 
 class Mtmchkin{
 
+private:
+
+    /**
+     * initializes the deck
+     * @param cards the cards in the deck
+     */
+    void initializeDeck(std::vector<std::string> cards);
+
 public:
     
     /**
@@ -52,7 +60,7 @@ public:
 
 private:
     int m_numRounds;
-    std::queue<std::shared_ptr<Card>> m_deck;
+    std::queue<std::unique_ptr<Card>> m_deck;
     std::vector<std::unique_ptr<Player>> m_players;
 };
 

@@ -64,7 +64,14 @@ bool Merchant::applyEncounter(Player& player)
 
 static bool isValid(string input)
 {
-    if (!input.compare(LEAVE) && !input.compare(HEALTH_POTION) && !input.compare(FORCE_BOOST)){
+    if(input.size() != 1){
+        return false;
+    }
+    if(!std::isdigit(input[0])){
+        return false;
+    }
+    int numInput = std::stoi(input);
+    if(numInput>2||numInput<0){
         return false;
     }
     return true;

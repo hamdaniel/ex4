@@ -13,7 +13,7 @@ using std::ostream;
 
 const string DRAGON = "Dragon";
 
-Battle::Battle(string name, int force, int damage, int coins):
+Battle::Battle(const string name, const int force, const int damage, const int coins)  :
                                                              Card(name),
                                                              m_force(force),
                                                              m_damage(damage),
